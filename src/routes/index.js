@@ -1,10 +1,11 @@
-import { useRoutes } from 'react-router-dom';
+import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 //
 import LoginPage from '../pages/LoginPage';
 import Page404 from '../pages/Page404';
 import { storageGetItem } from '../service/ash_mlm';
 import HomePage from '../pages/HomePage';
+import Layout from '../layouts';
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +19,12 @@ export default function Router() {
     },
     {
       path: '/',
-      element: <HomePage />
+      // element: token ? <Layout /> : <Navigate to="/login" />,
+      element: <Layout />,
+      children: [
+        { element: <Navigate to="/home" />, index: true },
+        { path: 'home', element: <HomePage />,},
+      ],
     },
     {
       path: '*',

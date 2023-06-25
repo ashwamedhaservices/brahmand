@@ -1,0 +1,15 @@
+/* topbar */
+.topbar__navlink {
+  margin-right: 16px;
+
+  color: var(--theme-seconary-color);
+}
+
+.topbar__navlink:last-child {
+  margin-right: 0;
+}
+
+.topbar__navlink.active {
+  border-bottom: 1px solid var(--theme-primary-color);
+  color: var(--theme-primary-color);
+}

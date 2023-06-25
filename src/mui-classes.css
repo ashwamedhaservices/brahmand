@@ -1,0 +1,5 @@
+/* Appbar */
+.MuiAppBar-root {
+  background: white;
+  height: var(--theme-navbar-top-height);
+}

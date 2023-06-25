@@ -1,4 +1,11 @@
 :root {
+  --theme-navbar-top-height: 60px;
+
+  --theme-font-family: "Poppins", sans-serif;
+  --theme-primary-color: #0A2745;
+  --theme-seconary-color: #707780;
+
+
   --theme-font-color__primary: #445965;
   --theme-active__link: #516C99;
   --theme-background: #F5F5F5;
@@ -32,19 +39,18 @@
   --theme-status-cancelled-background-color: #f8c3c1;
 
 }
+* {
+  box-sizing: border-box;
+}
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--theme-font-family) !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--theme-background);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
 
 a {

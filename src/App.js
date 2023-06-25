@@ -6,10 +6,12 @@ import Router from './routes';
 import ThemeProvider from './theme';
 import ScrollToTop from './components/scroll-to-top';
 import { AuthContextProvider } from './context/authentication/authContextProvider'
+import { CssBaseline } from '@mui/material';
 
 function App() {
   return (
     <div className="App">
+      <CssBaseline />
       <HelmetProvider>
         <BrowserRouter>
           <ThemeProvider>

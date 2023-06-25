@@ -4,6 +4,7 @@ import './index.css';
 import './layout.css';
 import './padding.css';
 import './flex.css';
+import './mui-classes.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
