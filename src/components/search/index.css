@@ -1,0 +1,27 @@
+.search-bar {
+  margin-top: 16px;
+  width: 90%;
+  height: 43px;
+  left: 16px;
+  top: 140px;
+  background: #fff5ea;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.search-bar input {
+  flex-grow: 1;
+  height: 100%;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.search-icon {
+  margin-right: 10px;
+  color: #666;
+}

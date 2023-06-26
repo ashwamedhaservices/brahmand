@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 
 import Bottombar from "./navbar/bottombar";
 import Topbar from "./navbar/topbar";
-import ViewPort from "../utils/viewPort";
+import { red } from "@mui/material/colors";
 
 const StyledRoot = styled("div")({
   display: "flex",
@@ -20,18 +20,15 @@ const Main = styled("div")(({ theme }) => ({
   flexGrow: 1,
   overflow: "auto",
   minHeight: "100%",
-  paddingBottom: BOTTOM_BAR_MOBILE,
+  paddingBottom: BOTTOM_BAR_MOBILE + 24,
   [theme.breakpoints.up['md']]: {
     paddingTop: 0,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
   },
   [theme.breakpoints.up("md")]: {
     paddingTop: TOP_BAR_DESKTOP,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
     paddingBottom: 0,
   },
+  backgroundColor: 'var(--theme-background)',
 }));
 
 const Layout = () => {

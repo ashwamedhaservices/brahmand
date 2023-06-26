@@ -1,0 +1,20 @@
+/* Font size and line height */
+.theme__typography--primary {
+  font-family: var(--theme-font-family);
+  font-size: var(--theme-primary-font-size);
+  line-height: var(--theme-primary-line-height);
+}
+
+/* Font color */
+.theme__palette--primary {
+  color: var(--theme-font-color-primary);
+}
+
+.theme__palette--secondary {
+  color: var(--theme-font-color-secondary);
+}
+
+/* Font weight */
+.theme__fw--primary {
+  font-weight: var(--theme-primary-font-weight);
+}

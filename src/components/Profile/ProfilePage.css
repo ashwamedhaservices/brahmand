@@ -1,0 +1,46 @@
+*{
+  box-sizing: border-box;
+}
+
+.profile-photo {
+  box-sizing: border-box;
+  border: 1px solid #980387;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  
+}
+.title-head{
+color: #000;
+font-size: 13px;
+font-weight: 500;
+
+}
+.dottet{
+  width: 230px;
+  height: 1px;
+  border: none;
+  border-top: 1px dotted black;
+  margin-left: 16px;
+  margin-right: 16px;
+
+}
+.profile-name{
+    box-sizing: border-box;
+    left: 150px;
+    padding-top: 10px;
+    margin-left: 16px;
+    
+
+}
+  
+  .heading{
+    color: #000;
+    font-size: 21px;
+    font-weight: 500;
+    
+    }
+
+
+  
+  

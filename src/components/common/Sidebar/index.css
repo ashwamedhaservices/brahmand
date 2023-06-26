@@ -10,7 +10,7 @@ li {
   padding: 10px 0;
 }
 .sidebar {
-  background: var(--theme-background__white);
+  background: var(--theme-background);
   width: 20%;
   padding-left: 16px;
   box-shadow: -7px 0 7px -7px rgba(0,0,0,0.7);

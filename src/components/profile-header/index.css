@@ -1,0 +1,14 @@
+.parent-container{
+  background-color: #E2D7CA;
+  border-bottom-left-radius: 26px;
+  border-bottom-right-radius: 26px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.app-conatiner{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding-left: 16px;
+  padding-top: 24px;
+}

@@ -3,3 +3,9 @@
   background: white;
   height: var(--theme-navbar-top-height);
 }
+
+/* Container */
+.MuiContainer-root {
+  padding-left: 0;
+  padding-right: 0;
+}
