@@ -1,4 +1,5 @@
-import { Container } from '@mui/system'
+import { InputAdornment, TextField } from '@mui/material'
+import { Container, Stack } from '@mui/system'
 import React from 'react'
 import { FaSearch } from 'react-icons/fa'
 import './index.css'
@@ -6,10 +7,17 @@ import './index.css'
 const Search = () => {
   return (
     <Container>
-      <div className="search-bar">
-        <FaSearch className="search-icon" />
-        <input type="text" placeholder="Search your network" />
-      </div>
+      <Stack sx={{ mx: 2 }}>
+        <TextField
+          disabled
+          size='small'
+          InputProps={{
+            startAdornment: <FaSearch className="search-icon" />,
+          }}
+          placeholder="Search your network"
+          type="text"
+        />
+      </Stack>
     </Container>
   )
 }

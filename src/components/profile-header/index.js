@@ -1,3 +1,4 @@
+import { Container, Divider } from '@mui/material';
 import React from 'react'
 import NetworkInfo from '../network-info';
 import Profile from '../Profile/profile-details';
@@ -7,14 +8,12 @@ import './index.css';
 
 const ProfileHeader = () => {
   return (
-    <div className='parent-container'>
-      <div className='app-conatiner'>
-        <Profile />
-        <Search />
-      </div>
+    <Container className='parent-container'>
+      <Profile />
+      <Search />
       <ReferFriend />
       <NetworkInfo />    
-    </div>
+    </Container>
   )
 }
 

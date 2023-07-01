@@ -9,3 +9,7 @@
   display: flex;
   justify-content: center;
 }
+
+.login__loading--button:hover {
+  background-color: var(--theme-background-quaternary)
+}

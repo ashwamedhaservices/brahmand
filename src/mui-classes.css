@@ -13,7 +13,7 @@
 /* Button */
 .MuiButtonBase-root,
 .MuiButtonBase-root:hover {
-  background-color: var(--theme-background-quaternary);
+  background-color: unset;
   box-shadow: unset;
 }
 
