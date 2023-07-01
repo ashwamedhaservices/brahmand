@@ -15,26 +15,25 @@ export const AuthContextProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const navigate = useNavigate();
   
-  const loginUser = async ({ mobile_number, email, username, password }) => {
-    const user = mockData.users.find((user) => ((user.username=== username || user.email === email) && user.password === password));
-    console.log(user);
+  const loginUser = async ({ mobile_number, otp }) => {
+    
 
     const response = await postLogin({
       users: {
         mobile_number,
-        password
+        otp
       }
     })
-    if(response) {
+    if(response && response.success) {
       dispatch(
         {
         type: SIGN_IN_USER, 
         payload: {
           username: JSON.parse(storageGetItem('users')).full_name,
-          password
+          otp
         }
       })
-      navigate('/dashboard', { replace: true });
+      navigate('/home', { replace: true });
     }
     // if(user) {
     //   dispatch(
@@ -52,6 +51,7 @@ export const AuthContextProvider = (props) => {
       // User is logged out
       storageClear();
       dispatch({type: SIGN_OUT_USER})
+      return response.message
     }
   }
   const logoutUser = () => {

@@ -36,3 +36,15 @@ footer {
 .footer-symbol a.active img {
   opacity: 1;
 }
+
+.bottombar {
+  background-color: var(--theme-background-secondary);
+  height: var(--theme-navbar-bottom-height);
+}
+
+.bottombar__button--selected {
+  background-color: var(--theme-background-primary);
+  height: 70px;
+  width: 64px;
+  border-radius: 40px;
+}

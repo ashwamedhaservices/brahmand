@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CHAPTER_CREATE, CHAPTER_GET, COURSE_CREATE, COURSE_GET, SUBJECT_CREATE, SUBJECT_GET, TOPIC_CREATE, TOPIC_GET, ADMIN_LOGIN, FILE_UPLOAD, FILE_UPLOAD_WITH_FORM_DATA } from '../config/servers/api';
+import { CHAPTER_CREATE, CHAPTER_GET, COURSE_CREATE, COURSE_GET, SUBJECT_CREATE, SUBJECT_GET, TOPIC_CREATE, TOPIC_GET, ADMIN_LOGIN, FILE_UPLOAD, FILE_UPLOAD_WITH_FORM_DATA, getPartnerAcountsApi } from '../config/servers/api';
 
 // let instance;
 // class ApiAdminService {
@@ -19,17 +19,18 @@ import { CHAPTER_CREATE, CHAPTER_GET, COURSE_CREATE, COURSE_GET, SUBJECT_CREATE,
 // export default ApiAdminServiceInstance;
 
 // Local Storage
-export const storageSetItem = (key, value) => localStorage.setItem(key, value);
-export const storageGetItem = (key) => localStorage.getItem(key);
-export const storageClear = () => localStorage.clear();
-export const storageRemoveItem = (key) => localStorage.removeItem(key);
+export const storageSetItem = async (key, value) => localStorage.setItem(key, value);
+export const storageGetItem = async (key) => localStorage.getItem(key);
+export const storageClear = async () => localStorage.clear();
+export const storageRemoveItem = async (key) => localStorage.removeItem(key);
 
-const getHeaderOptions = () => (
-  {
+const getHeaderOptions = async () => {
+  const token = await storageGetItem('partner_token');
+  return {
     "Content-type": "application/json",
-    Authorization: `Bearer ${storageGetItem('token')}`,
+    Authorization: `Bearer ${token}`,
   }
-)
+}
 
 // Login
 export const postLogin = async (payload) => {
@@ -46,12 +47,9 @@ export const postLogin = async (payload) => {
     response = response.data
     if(response.success) {
       const { attributes } = response.data
-      storageSetItem('users', JSON.stringify({
-        id: attributes.id,
-        full_name: attributes.full_name
-      }))
-      storageSetItem('token', attributes.token);
-      return response.data
+      storageSetItem('users', JSON.stringify(attributes))
+      storageSetItem('partner_token', attributes.token);
+      return response
     } else {
       return null
     }
@@ -61,224 +59,24 @@ export const postLogin = async (payload) => {
   }
 }
 
-// Course API CALL
-export const createCourse = async (payload) => {
+export const getPartnerAccounts = async () => {
   try {
-    let response = await axios({
-      method: 'post',
-      url: COURSE_CREATE(),
-      headers: getHeaderOptions(),
-      data: payload,
-    });
-    console.log('[createCourse]::', response);
-    response = response.data
-    if(response.status === 'success') {
-      return response.data
-    } else {
-      return null
-    }
-  } catch (error) {
-    console.log('[error]::[createCourse]', error.response)
-    return null
-  }
-}
-
-export const getCourse = async () => {
-  try {
-    const token = storageGetItem('token');
-    console.log('[getCourse]:: token', token)
+    console.log('[getPartnerAccounts]:: Enter')
+    const getHeader = await getHeaderOptions();
+    console.log('[getPartnerAccounts]::[header]::', getHeader);
     let response = await axios({
       method: 'get',
-      url: COURSE_GET(),
-      headers: getHeaderOptions(),
+      url: getPartnerAcountsApi(),
+      headers: getHeader,
     });
-    console.log('[getCourse]::', response, response.data);
-    response = response.data
-    if(response.status === 'success') {
+    console.log('[getPartnerAccounts]::[response]:: ', response);
+    if(response && response.success) {
       return response.data
     } else {
-      return null
+      return null;
     }
   } catch (error) {
-    console.log('[error]::[getCourse]', error.response)
-    return null
+    console.log('[getPartnerAccounts]::[error]:: ', error);
+    return null;
   }
-}
-
-// Subject API CALL
-export const createSubject = async (course_id, payload) => {
-  try {
-    let response = await axios({
-      method: 'post',
-      url: SUBJECT_CREATE(course_id),
-      headers: getHeaderOptions(),
-      data: payload,
-    });
-    console.log('[createSubject]::', response);
-    response = response.data
-    if(response.status === 'success') {
-      return response.data
-    } else {
-      return null
-    }
-  } catch (error) {
-    console.log('[error]::[createSubject]', error.response)
-    return null
-  }
-}
-
-export const getSubject = async (course_id) => {
-  try {
-    let response = await axios({
-      method: 'get',
-      headers: getHeaderOptions(),
-      url: SUBJECT_GET(course_id),
-    });
-    console.log('[getSubject]::', response);
-    response = response.data
-    if(response.status === 'success') {
-      return response.data
-    } else {
-      return null
-    }
-  } catch (error) {
-    console.log('[error]::[getSubject]', error.response)
-    return null
-  }
-}
-
-// Chapter API CALL
-export const createChapter = async (subject_id, payload) => {
-  try {
-    let response = await axios({
-      method: 'post',
-      url: CHAPTER_CREATE(subject_id),
-      headers: getHeaderOptions(),
-      data: payload
-    });
-    console.log('[createChapter]::', response);
-    response = response.data
-    if(response.status === 'success') {
-      return response.data
-    } else {
-      return null
-    }
-  } catch (error) {
-    console.log('[error]::[createChapter]', error.response)
-    return null
-  }
-}
-
-export const getChapter = async (subject_id) => {
-  try {
-    let response = await axios({
-      method: 'get',
-      url: CHAPTER_GET(subject_id),
-      headers: getHeaderOptions(),
-    });
-    console.log('[getChapter]::', response);
-    response = response.data
-    if(response.status === 'success') {
-      return response.data
-    } else {
-      return null
-    }
-  } catch (error) {
-    console.log('[error]::[getChapter]', error.response)
-    return null
-  }
-}
-
-// Topic API CALL
-export const createTopic = async (chapter_id, payload) => {
-  try {
-    let response = await axios({
-      method: 'post',
-      url: TOPIC_CREATE(chapter_id),
-      headers: getHeaderOptions(),
-      data: payload
-    });
-    console.log('[createChapter]::', response);
-    response = response.data
-    if(response.status === 'success') {
-      return response.data
-    } else {
-      return null
-    }
-  } catch (error) {
-    console.log('[error]::[createChapter]', error.response)
-    return null
-  }
-}
-
-export const getTopic = async (chapter_id) => {
-  try {
-    let response = await axios({
-      method: 'get',
-      url: TOPIC_GET(chapter_id),
-      headers: getHeaderOptions(),
-    });
-    console.log('[getChapter]::', response);
-    response = response.data
-    if(response.status === 'success') {
-      return response.data
-    } else {
-      return null
-    }
-  } catch (error) {
-    console.log('[error]::[getChapter]', error.response)
-    return null
-  }
-}
-
-// UPLOAD FILE TO GET PRESIGNEDURL
-// {
-//   "file": {
-//     "name": "image",
-//     "location": "/subject_logo",
-//     "type": "png"
-//   }
-// }
-
-// Creating File Location
-export const postFileUpload = async (payload) => {
-  try {
-    let response = await axios({
-      method: 'post',
-      url: FILE_UPLOAD(),
-      headers: getHeaderOptions(),
-      data: payload
-    });
-    console.log('[postFileUpload]::', response);
-    response = response.data
-    if(response.success) {
-      return response
-    } else {
-      return null
-    }
-  } catch (error) {
-    console.log('[error]::[postFileUpload]', error.response)
-    return null
-  }
-}
-
-// File Uploaded to the location
-export const putFileUpload = async (axios_url, payload, handleUploadProgress = ()=>{}, content_type = "image/*") => {
-  try {
-    console.log('[putFileUpload]::', axios_url, payload)
-    return axios({
-      method: 'put',
-      url: axios_url,
-      headers: {
-        "Content-type": content_type,
-        "x-amz-acl": "public-read",
-      },
-      data: payload,
-      onUploadProgress: handleUploadProgress
-    });
-  } catch (error) {
-    console.log('[error]::[putFileUpload]', error.response)
-    return null
-  }
-}
-
+} 

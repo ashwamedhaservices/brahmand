@@ -9,3 +9,34 @@
   padding-left: 0;
   padding-right: 0;
 }
+
+/* Button */
+.MuiButtonBase-root,
+.MuiButtonBase-root:hover {
+  background-color: var(--theme-background-quaternary);
+  box-shadow: unset;
+}
+
+
+
+/* Textfield */
+.MuiInputBase-root {
+  border-radius: 16px;
+  box-shadow: var(--theme-box-shadow-input);
+  background-color: var(--theme-background-input);
+  color: var(--theme-font-color-primary);
+}
+
+/* Border fieldset classes */
+.Mui-focused .MuiOutlinedInput-notchedOutline  {
+  border-color: var(--theme-background-primary) !important; 
+  border-width: 1px !important;
+}
+
+.css-znbc8-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--theme-button-border-color);
+}
+
+.css-znbc8-MuiInputBase-root-MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-notchedOutline {
+  border-color: unset;
+}

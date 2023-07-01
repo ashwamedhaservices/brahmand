@@ -1,30 +1,43 @@
-import React from 'react'
+import React from "react";
 // @mui/material
-import Paper from '@mui/material/Paper';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import Paper from "@mui/material/Paper";
+import BottomNavigation from "@mui/material/BottomNavigation";
 // @mui/icons
-import RestoreIcon from '@mui/icons-material/Restore';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ArchiveIcon from '@mui/icons-material/Archive';
+import { useLocation } from "react-router-dom";
+import { Avatar, Button } from "@mui/material";
+import './bottombar.css';
 
 const Bottombar = () => {
   const [value, setValue] = React.useState(0);
+  const location = useLocation();
+  console.log("Bottombar", location);
   return (
-    <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, display: { xs: 'block', md: 'none'  }}} elevation={3}>
+    <Paper
+      sx={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        display: { xs: "block", md: "none" },
+      }}
+      elevation={3}
+    >
       <BottomNavigation
-        showLabels
         value={value}
         onChange={(event, newValue) => {
           setValue(newValue);
         }}
+        className="bottombar k-aic k-jcse"
       >
-        <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-        <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-        <BottomNavigationAction label="Archive" icon={<ArchiveIcon />} />
+        <Button href="/home" variant="contained" className={location && location.pathname === '/home' ? 'bottombar__button--selected' : 'bottombar__button'}>
+          <Avatar src="/assets/illustrations/HomePage.svg" alt="Home" />
+        </Button>
+        <Button href="/user-profile" variant="contained" className={location && location.pathname === '/user-profile' ? 'bottombar__button--selected' : 'bottombar__button'}>
+          <Avatar src="/assets/illustrations/Customer.svg" alt="Profile" />
+        </Button>
       </BottomNavigation>
     </Paper>
-  )
-}
+  );
+};
 
-export default Bottombar;
+export default React.memo(Bottombar);

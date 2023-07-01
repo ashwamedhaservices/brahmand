@@ -1,75 +1,87 @@
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 // @mui
-import { styled } from '@mui/material/styles';
-import { Container, Typography } from '@mui/material';
+import { styled } from "@mui/material/styles";
+import { Container, Typography } from "@mui/material";
 // hooks
-import useResponsive from '../hooks/useResponsive';
+import useResponsive from "../hooks/useResponsive";
 // components
-import Logo from '../components/logo';
+import Logo from "../components/logo";
+import LoginForm from "../sections/auth/login/login-form";
 // sections
-import { LoginForm } from '../sections/auth/login';
+
 
 // ----------------------------------------------------------------------
 
-const StyledRoot = styled('div')(({ theme }) => ({
-  [theme.breakpoints.up('md')]: {
-    display: 'flex',
+const StyledRoot = styled("div")(({ theme }) => ({
+  [theme.breakpoints.up("md")]: {
+    display: "flex",
   },
+  [theme.breakpoints.down('md')]: {
+    backgroundColor: 'var(--theme-background)',
+  }
 }));
 
-const StyledSection = styled('div')(({ theme }) => ({
-  width: '100%',
+const StyledSection = styled("div")(({ theme }) => ({
+  width: "100%",
   maxWidth: 480,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
   boxShadow: theme.customShadows.card,
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: theme.palette.background.default, 
 }));
 
-const StyledContent = styled('div')(({ theme }) => ({
+const StyledContent = styled("div")(({ theme }) => ({
   maxWidth: 480,
-  margin: 'auto',
-  minHeight: '100vh',
-  display: 'flex',
-  justifyContent: 'center',
-  flexDirection: 'column',
+  margin: "auto",
+  minHeight: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "column",
   padding: theme.spacing(12, 0),
+  [theme.breakpoints.down('md')]: {
+    justifyContent: 'start',
+    padding: theme.spacing(12, 2)
+  },
 }));
 
 // ----------------------------------------------------------------------
 
 export default function LoginPage() {
-  const mdUp = useResponsive('up', 'md');
+  const mdUp = useResponsive("up", "md");
 
   return (
     <>
       <Helmet>
-        <title> Login | Ashwamedha admin UI </title>
+        <title> Login | Ashwamedha MLM </title>
       </Helmet>
-
       <StyledRoot>
-        <Logo
-          sx={{
-            position: 'fixed',
-            top: { xs: 16, sm: 24, md: 40 },
-            left: { xs: 16, sm: 24, md: 40 },
-          }}
-        />
-
         {mdUp && (
-          <StyledSection>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
-            </Typography>
-            <img src="/assets/illustrations/illustration_login.png" alt="login" />
-          </StyledSection>
+          <>
+            <Logo
+              sx={{
+                position: "fixed",
+                top: { xs: 16, sm: 24, md: 40 },
+                left: { xs: 16, sm: 24, md: 40 },
+              }}
+            />
+
+            <StyledSection>
+              <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+                Hi, Welcome Back
+              </Typography>
+              <img
+                src="/assets/illustrations/illustration_login.png"
+                alt="login"
+              />
+            </StyledSection>
+          </>
         )}
 
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h5" gutterBottom sx={{ mb: 5 }}>
-              Let's Sign in
+              Login
             </Typography>
 
             <LoginForm />

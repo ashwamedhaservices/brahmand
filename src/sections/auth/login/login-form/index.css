@@ -1,0 +1,11 @@
+.login__loading--button {
+  background-color: var(--theme-background-quaternary);
+  border: 1px solid var(--theme-button-border-color);
+  border-radius: 24px;
+
+  width: 157px;
+  height: 54px;
+
+  display: flex;
+  justify-content: center;
+}

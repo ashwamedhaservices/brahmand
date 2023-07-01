@@ -13,7 +13,7 @@ const StyledRoot = styled("div")({
   flexDirection: 'column',
 });
 
-const BOTTOM_BAR_MOBILE = 56;
+const BOTTOM_BAR_MOBILE = 95;
 const TOP_BAR_DESKTOP = 60;
 
 const Main = styled("div")(({ theme }) => ({

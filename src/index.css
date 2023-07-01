@@ -1,5 +1,6 @@
 :root {
   --theme-navbar-top-height: 60px;
+  --theme-navbar-bottom-height: 95px;
 
   --theme-font-family: "Poppins", sans-serif;
   --theme-primary-color: #0A2745;
@@ -15,6 +16,8 @@
   --theme-background-tertiary: #E1DAD8;
   --theme-background-quaternary: #978396;
   --theme-background-quinary: #E2D7CA;
+  --theme-background-input: #FFF5EA;
+  --theme-button-border-color: #E76993;
 
   --theme-font-color-primary: #000000;
   --theme-font-color-secondary: #FFFFFF;
@@ -33,6 +36,7 @@
   --theme-secondary-font-weight: 400;
 
   --theme-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  --theme-box-shadow-input: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 
   --theme-status-shipped-font-color: #44CD79;
   --theme-status-shipped-background-color: #F3FCF6;
@@ -47,6 +51,7 @@
 @media screen and (min-width: 768px) {
   :root {
     --theme-background: #FFFFFF;
+    --theme-background-input: #FFFFFF;
   }
 }
 

@@ -1,15 +1,12 @@
 .search-bar {
-  margin-top: 16px;
-  width: 90%;
+  width: 100%;
   height: 43px;
-  left: 16px;
-  top: 140px;
   background: #fff5ea;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   display: flex;
   align-items: center;
-  padding-left: 20px;
+  padding-left: 16px;
 }
 
 .search-bar input {

@@ -9,7 +9,7 @@ const NetworkInfo = () => {
         style={{ paddingBottom: "23px" }}
       >
       {Network_Info.map((card) => (
-        <div className="network-container">
+        <div className="network-container" key={card.id}>
           <div key={card.id} className="symbol-card-container">
             <div className="symbol-container" key={card.id}>
               <img src={card.symbol} alt={card.title} />{" "}
