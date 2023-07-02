@@ -20,20 +20,23 @@ const PAYOUT_DATA = [
     type: "Weekly payout",
   },
 ];
-const Payouts = () => {
+const Payouts = ({ payouts }) => {
   return (
-    <Container>
-      <Typography className="k-pt32 k-ml16 k-mb16 theme__typography--primary theme__palette--primary theme__fw--primary">
-        Payouts
-      </Typography>
-      <div
-        className="scrollbar__container k-flex k-fnw scrollbar"
-      >
-        {PAYOUT_DATA.map((payout, index) => (
-          <PayoutCard payout={payout} key={index}/>
-        ))}
-      </div>
-    </Container>
+    <>
+      {payouts && <Container>
+        <Typography className="k-pt32 k-ml16 k-mb16 theme__typography--primary theme__palette--primary theme__fw--primary">
+          Payouts
+        </Typography>
+        <div
+          className="scrollbar__container k-flex k-fnw scrollbar"
+        >
+          {payouts.map((payout, index) => (
+            <PayoutCard payout={payout} key={index}/>
+          ))}
+        </div>
+        </Container>
+      }
+    </>
   );
 };
 

@@ -1,0 +1,21 @@
+.performer__box {
+  height: 84px;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  margin-bottom: 16px;
+}
+
+.performer__box:last-child {
+  margin-bottom: 0;
+}
+
+.performer__box--primary {
+  color: #000;
+  background-color: #A290A0;
+}
+
+.performer__box--secondary {
+  color: var(--theme-font-color-primary);
+  background-color: var(--theme-background-tertiary);
+}
+

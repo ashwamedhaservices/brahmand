@@ -5,9 +5,9 @@ import "./index.css";
 const NetworkInfo = () => {
   return (
     <div
-        className="k-mt32 k-pl8 k-flex k-fnw scrollbar__container scrollbar"
-        style={{ paddingBottom: "23px" }}
-      >
+      className="k-mt32 k-flex k-fnw scrollbar__container scrollbar"
+      style={{ paddingBottom: "23px" }}
+    >
       {Network_Info.map((card) => (
         <div className="network-container" key={card.id}>
           <div key={card.id} className="symbol-card-container">

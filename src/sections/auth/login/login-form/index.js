@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 // @mui
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -7,18 +8,21 @@ import Iconify from '../../../../components/iconify';
 import { isValidEmail, isValidMobileNumber, isValidPassword, isValidUserName } from '../../../../utils/validations';
 import { AuthContext } from '../../../../context/authentication/authContextProvider';
 
-// ----------------------------------------------------------------------
 import './index.css';
 
 export default function LoginForm() {
-
+  const route = useLocation();
   const { login } = useContext(AuthContext)
-  const [mobile] = useState('9087860631');
+  const [mobile, setMobile] = useState('');
+  const [mobileError, setMobileError] = useState('');
   const [otp, setOtp] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
   const [otpError, setOtpError] = useState('');
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(route.search);
+    setMobile(() => searchParams.get('mobile_number'));
+  }, [])
+  
   const handleOtpChange = (e) => {
     setOtp(e.target.value);
     setOtpError('');
@@ -40,14 +44,21 @@ export default function LoginForm() {
 
   const validate = () => {
     let isValid = true;
-    
-    if (otp.length !== 6) {
-      setOtpError('Enter valid otp');
+
+    if(mobile.length !== 10) {
+      setMobileError('Mobile number should be 10 digit long.');
+      isValid = false;
+    } else if(!isValidMobileNumber(mobile)) {
+      setMobileError('Mobile number is not valid.');
       isValid = false;
     }
 
-    else if(isValid) {
-      setOtpError('')
+    if (otp.length !== 6) {
+      setOtpError('Enter valid otp');
+      isValid = false;
+    } else if(isValid) {
+      setMobileError('');
+      setOtpError('');
     }
 
     return isValid;
@@ -61,11 +72,13 @@ export default function LoginForm() {
           type="tel"
           name="mobile_number"
           value={mobile}
+          error={mobileError ? true : false}
+          helperText={mobileError ? mobileError : ''}
           pattern="[0-9]{10}"
           size='small'
         />
         <TextField
-          name="password"
+          name="otp"
           placeholder="Enter 6 digit OTP"
           value={otp}
           onChange={handleOtpChange}
