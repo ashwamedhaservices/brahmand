@@ -6,7 +6,7 @@ const Performer = ({ performer, isSecondary}) => {
   const {name, earnings, level} = performer
   return (
     <Box
-      className={`k-flex k-aic performer__box performer__box--primary ${isSecondary ? 'performer__box--secondary': ''}`}
+      className={`k-flex k-aic performer__box ${isSecondary ? 'performer__box--secondary': 'performer__box--primary'}`}
     >
       <div className="k-ml16 k-mt16 k-mb16">
         <Avatar src="assets/illustrations/Ellipse 47.svg"

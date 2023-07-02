@@ -10,8 +10,16 @@
 }
 
 .performer__box--primary {
-  color: #000;
-  background-color: #A290A0;
+  color: var(--theme-font-color-primary);
+  background-color: var(--theme-background-primary);
+}
+
+.performer__box--primary:nth-child(even){
+  background-color: var(--theme-background-primary);
+} 
+
+.performer__box--primary:nth-child(odd)  {
+  background-color: var(--theme-background-secondary);
 }
 
 .performer__box--secondary {
