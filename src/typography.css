@@ -27,3 +27,6 @@
 .theme__fw--primary {
   font-weight: var(--theme-primary-font-weight);
 }
+.theme__fw--seconary {
+  font-weight: var(--theme-secondary-font-weight);
+}

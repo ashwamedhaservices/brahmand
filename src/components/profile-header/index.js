@@ -12,7 +12,7 @@ const ProfileHeader = () => {
       <Profile />
       <Search />
       <ReferFriend />
-      <NetworkInfo />    
+      {/* <NetworkInfo />     */}
     </Container>
   )
 }

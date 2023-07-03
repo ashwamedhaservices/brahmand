@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Container } from '@mui/material';
 import Payouts from '../components/payouts';
 import NetworkInfo from '../components/network-info';
-import TopPerformer from '../components/top-performer';
-import BottomPerformer from '../components/bottom-performer';
 import { getPartnerAccounts } from '../service/ash_mlm'
 import Partner_Accounts from '../_mock/partner_accounts';
+import Performers from '../components/performers';
 
 const HomePage = () => {
   const [partnerAccount, setPartnerAccount] = useState({});
@@ -33,9 +32,9 @@ const HomePage = () => {
   return (
     <Container>
       <Payouts payouts={partnerAccount.payouts} />
-      <NetworkInfo network={getNewtworkInfo}/>
-      <TopPerformer performer={partnerAccount.top}/>
-      <BottomPerformer performer={partnerAccount.bottom}/>
+      {/* <NetworkInfo network={getNewtworkInfo}/> */}
+      <Performers title="Top performers" performer={partnerAccount.top}/>
+      <Performers title="Bottom performers" performer={partnerAccount.bottom} isSecondary/>
     </Container>
   )
 }

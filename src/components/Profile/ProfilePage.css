@@ -41,6 +41,15 @@ font-weight: 500;
     
     }
 
+.refer__img--container {
+  padding: 4px;
+  background-color: var(--theme-background-primary);
+}
+.refer__img--container img{
+  width: 18px;
+  height: 18px;
+}
+
 
   
   
