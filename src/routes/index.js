@@ -10,8 +10,8 @@ import UserProfilePage from '../pages/UserProfilePage';
 // ----------------------------------------------------------------------
 
 export default function Router() {
-  const token = storageGetItem('token');
-
+  const token = storageGetItem('partner_token');
+  console.log('token', token);
   const routes = useRoutes([
     {
       path: '/login',
@@ -19,8 +19,8 @@ export default function Router() {
     },
     {
       path: '/',
-      // element: token ? <Layout /> : <Navigate to="/login" />,
-      element: <Layout />,
+      element: token ? <Layout /> : <Navigate to="/login" />,
+      // element: <Layout />,
       children: [
         { element: <Navigate to="/home" />, index: true },
         { path: 'home', element: <HomePage />},

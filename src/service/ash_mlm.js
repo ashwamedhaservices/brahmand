@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CHAPTER_CREATE, CHAPTER_GET, COURSE_CREATE, COURSE_GET, SUBJECT_CREATE, SUBJECT_GET, TOPIC_CREATE, TOPIC_GET, ADMIN_LOGIN, FILE_UPLOAD, FILE_UPLOAD_WITH_FORM_DATA, getPartnerAcountsApi } from '../config/servers/api';
+import { getUserLoginApi, getPartnerAcountsApi, getPartnerAccountsNetworkApi } from '../config/servers/api';
 
 // let instance;
 // class ApiAdminService {
@@ -19,13 +19,13 @@ import { CHAPTER_CREATE, CHAPTER_GET, COURSE_CREATE, COURSE_GET, SUBJECT_CREATE,
 // export default ApiAdminServiceInstance;
 
 // Local Storage
-export const storageSetItem = async (key, value) => localStorage.setItem(key, value);
-export const storageGetItem = async (key) => localStorage.getItem(key);
-export const storageClear = async () => localStorage.clear();
-export const storageRemoveItem = async (key) => localStorage.removeItem(key);
+export const storageSetItem = (key, value) => localStorage.setItem(key, value);
+export const storageGetItem = (key) => localStorage.getItem(key);
+export const storageClear = () => localStorage.clear();
+export const storageRemoveItem = (key) => localStorage.removeItem(key);
 
 const getHeaderOptions = async () => {
-  const token = await storageGetItem('partner_token');
+  const token = storageGetItem('partner_token');
   return {
     "Content-type": "application/json",
     Authorization: `Bearer ${token}`,
@@ -37,7 +37,7 @@ export const postLogin = async (payload) => {
   try {
     let response = await axios({
       method: 'post',
-      url: ADMIN_LOGIN(),
+      url: getUserLoginApi(),
       headers: {
         "Content-type": "application/json"
       },
@@ -61,22 +61,44 @@ export const postLogin = async (payload) => {
 
 export const getPartnerAccounts = async () => {
   try {
-    console.log('[getPartnerAccounts]:: Enter')
+    console.log('[services]::[getPartnerAccounts]:: Enter')
     const getHeader = await getHeaderOptions();
-    console.log('[getPartnerAccounts]::[header]::', getHeader);
+    console.log('[services]::[getPartnerAccounts]::[header]::', getHeader);
     let response = await axios({
       method: 'get',
       url: getPartnerAcountsApi(),
       headers: getHeader,
     });
-    console.log('[getPartnerAccounts]::[response]:: ', response);
+    console.log('[services]::[getPartnerAccounts]::[response]:: ', response);
     if(response && response.success) {
       return response.data
     } else {
       return null;
     }
   } catch (error) {
-    console.log('[getPartnerAccounts]::[error]:: ', error);
+    console.log('[services]::[getPartnerAccounts]::[error]:: ', error);
+    return null;
+  }
+} 
+
+export const getPartnerAccountsNetwork = async () => {
+  try {
+    console.log('[services]::[getPartnerAccountsNetwork]:: Enter')
+    const getHeader = await getHeaderOptions();
+    console.log('[services]::[getPartnerAccountsNetwork]::[header]::', getHeader);
+    let response = await axios({
+      method: 'get',
+      url: getPartnerAccountsNetworkApi(),
+      headers: getHeader,
+    });
+    console.log('[services]::[getPartnerAccountsNetwork]::[response]:: ', response);
+    if(response && response.success) {
+      return response.data
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.log('[services]::[getPartnerAccountsNetwork]::[error]:: ', error);
     return null;
   }
 } 

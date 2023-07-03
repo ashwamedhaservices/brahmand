@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Container } from '@mui/material/node_modules/@mui/system';
+import { Container } from '@mui/material';
 import Payouts from '../components/payouts';
 import NetworkInfo from '../components/network-info';
 import TopPerformer from '../components/top-performer';
