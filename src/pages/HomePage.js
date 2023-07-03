@@ -11,8 +11,8 @@ const HomePage = () => {
   const [partnerAccount, setPartnerAccount] = useState({});
 
   useEffect(() => {
-    setPartnerAccount(() => Partner_Accounts);
-    // fetchPartnerAccounts();
+    // setPartnerAccount(() => Partner_Accounts);
+    fetchPartnerAccounts();
   }, []);
 
   const fetchPartnerAccounts = async () => {
@@ -32,10 +32,10 @@ const HomePage = () => {
 
   return (
     <Container>
-      <Payouts payouts={partnerAccount.payout} />
+      <Payouts payouts={partnerAccount.payouts} />
       <NetworkInfo network={getNewtworkInfo}/>
-      <TopPerformer performer={partnerAccount.top_performers}/>
-      <BottomPerformer performer={partnerAccount.bottom_performers}/>
+      <TopPerformer performer={partnerAccount.top}/>
+      <BottomPerformer performer={partnerAccount.bottom}/>
     </Container>
   )
 }

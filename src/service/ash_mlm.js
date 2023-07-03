@@ -69,6 +69,7 @@ export const getPartnerAccounts = async () => {
       url: getPartnerAcountsApi(),
       headers: getHeader,
     });
+    response = response.data;
     console.log('[services]::[getPartnerAccounts]::[response]:: ', response);
     if(response && response.success) {
       return response.data
@@ -91,6 +92,7 @@ export const getPartnerAccountsNetwork = async () => {
       url: getPartnerAccountsNetworkApi(),
       headers: getHeader,
     });
+    response = response.data;
     console.log('[services]::[getPartnerAccountsNetwork]::[response]:: ', response);
     if(response && response.success) {
       return response.data

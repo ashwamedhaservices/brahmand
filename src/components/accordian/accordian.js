@@ -18,7 +18,8 @@ function CustomAccordian({ data }) {
   return (
     <>
       {data && data.map((item) => (
-        <div className="k-ml8 k-mr8" key={item.name + item.number}>
+        <div className="k-ml8 k-mr8" key={item.fname + item.mobile_number
+        }>
           <Accordion style={mystyle}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon style={{ color: "white" }} />}
@@ -26,14 +27,20 @@ function CustomAccordian({ data }) {
               id="panel1a-header"
             >
               <div className="k-flex k-fdr k-jcsb" style={{ width: "100%" }}>
-                <div>{item.name}</div>
-                <div className="k-mr32">{item.number}</div>
+                <div>{item.fname}</div>
+                <div className="k-mr32">{item.mobile_number}</div>
               </div>
             </AccordionSummary>
-            <AccordionDetails>
-              <div className="k-flex k-fdc">
-                <div>{item.level}</div>
-                <div className="k-mt8">{item.earning}</div>
+            <AccordionDetails className="theme__typography--secondary theme__palette--tertiary">
+              <div className="k-flex">
+                <div>Newtwork size: {item.newtwork_size}</div>
+                <div className="k-pl4 k-pr4">|</div>
+                <div className="">Level {item.level}</div>
+              </div>
+              <div className="k-flex">
+                <div>Earnings {item.earning}</div>
+                <div className="k-pl4 k-pr4">|</div>
+                <div className="">Last payout {item.earning}</div>
               </div>
             </AccordionDetails>
           </Accordion>

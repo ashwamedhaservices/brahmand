@@ -30,13 +30,13 @@ const Data = [
   },
 ];
 
-const NetworksByLevel = () => {
+const NetworksByLevel = ({networks}) => {
   return (
     <Container>
       <Typography className="k-pt32 k-ml16 k-mb16 theme__typography--primary theme__palette--primary theme__fw--primary">
         My Network
       </Typography>
-      <CustomAccordian data={Data}/>
+      <CustomAccordian data={networks}/>
     </Container>
   )
 }

@@ -9,8 +9,8 @@ const UserProfilePage = () => {
   const [partnerAccountNetwork, setPartnerAccountNetwork] = useState([]);
 
   useEffect(() => {
-    setPartnerAccountNetwork(() => Partner_Accounts_Network);
-    // fetchPartnerAccountsNetwork();
+    // setPartnerAccountNetwork(() => Partner_Accounts_Network);
+    fetchPartnerAccountsNetwork();
   }, []);
 
   const fetchPartnerAccountsNetwork = async () => {
