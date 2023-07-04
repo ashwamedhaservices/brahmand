@@ -1,4 +1,4 @@
-import { Container } from '@mui/material/node_modules/@mui/system';
+import { Container } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import NetworksByLevel from '../components/networks-by-level';
 import ProfileHeader from '../components/profile-header';
