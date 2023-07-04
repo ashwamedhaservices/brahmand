@@ -16,15 +16,7 @@ font-size: 13px;
 font-weight: 500;
 
 }
-.dottet{
-  width: 230px;
-  height: 1px;
-  border: none;
-  border-top: 1px dotted black;
-  margin-left: 16px;
-  margin-right: 16px;
 
-}
 .profile-name{
     box-sizing: border-box;
     left: 150px;
@@ -48,6 +40,18 @@ font-weight: 500;
 .refer__img--container img{
   width: 18px;
   height: 18px;
+}
+
+.dottet{
+  border-top: 2px dashed var(--theme-font-color-tertiary);
+  margin-left: 4px;
+  margin-right: 4px;
+  flex: 1;
+}
+
+.referral__url {
+  width: 150px;
+  overflow: hidden;
 }
 
 

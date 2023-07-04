@@ -23,6 +23,10 @@
 .theme__palette--tertiary {
   color: var(--theme-font-color-tertiary);
 }
+
+.theme__palette--quaternary {
+  color: var(--theme-background-quaternary);
+}
 /* Font weight */
 .theme__fw--primary {
   font-weight: var(--theme-primary-font-weight);

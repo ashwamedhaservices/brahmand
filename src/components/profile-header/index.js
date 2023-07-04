@@ -10,7 +10,7 @@ const ProfileHeader = () => {
   return (
     <Container className='parent-container'>
       <Profile />
-      <Search />
+      {/* <Search /> */}
       <ReferFriend />
       {/* <NetworkInfo />     */}
     </Container>

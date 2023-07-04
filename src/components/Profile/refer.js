@@ -1,5 +1,6 @@
-import { Avatar } from "@mui/material";
-import React from "react";
+import { Avatar, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { storageGetItem } from "../../service/ash_mlm";
 import "./ProfilePage.css";
 
 const copyLink = () => {
@@ -15,13 +16,22 @@ const shareLink = () => {
 };
 
 function ReferFriend() {
-  const getCopyLinkIcon = () => `/assets/theme/common/light/copy-link.svg`;
-  const getShareIcon = () => `/assets/theme/common/light/share.svg`;
+    const [referralUrl, setReferralUrl] = useState('Guest');
+  
+    useEffect(() => {
+      getStorageItem();
+    }, [])
+  
+    const getStorageItem = () => {
+      const user = JSON.parse(storageGetItem('users'));
+      setReferralUrl(() => user.referral_url)
+      return 
+    }
   return (
     <div className="k-pb32">
       <div className="k-ml24 k-mt24 k-mb16">Refer a friend</div>
       <div className="k-flex k-aic k-jcsb">
-        <div className="k-flex k-fdc k-ml24">
+        <div className="k-flex k-fdc k-ml24 k-pr4">
           <Avatar
             className="refer__img--container"
             src="/assets/theme/common/light/copy-link.svg"
@@ -31,7 +41,7 @@ function ReferFriend() {
           />
         </div>
         <div className="dottet"></div>
-        <div>referal link</div>
+        <Typography class="theme__typography--secondary theme__palette--quaternary theme__fw--primary referral__url">{referralUrl}</Typography>
         <div className="dottet"></div>
         <Avatar
           className="k-ml8 k-mr24 refer__img--container"
