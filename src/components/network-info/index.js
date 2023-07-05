@@ -1,33 +1,37 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import "./index.css";
 
 const NetworkInfo = ({ earnings, networkSize, networkWidth, networkLength }) => {
-  const [networkInfo] = useState([
-    {
-      id: 1,
-      title: 'Network size',
-      content: networkSize,
-      symbol: '/assets/illustrations/gisNetworkO0.svg',
-    },
-    {
-      id: 2,
-      title: 'Current earnings',
-      content: earnings,
-      symbol: '/assets/illustrations/Vector.svg',
-    },
-    {
-      id: 3,
-      title: 'Network width',
-      content: networkWidth,
-      symbol: 'assets/illustrations/Vector (1).svg',
-    },
-    {
-      id: 4,
-      title: 'Network length',
-      content: networkLength,
-      symbol: 'assets/illustrations/Vector (2).svg',
-    },
-  ]);
+  const [networkInfo, setNetworkInfo] = useState([]);
+
+  useEffect(() => {
+    setNetworkInfo(() => ([
+      {
+        id: 1,
+        title: 'Network size',
+        content: networkSize,
+        symbol: '/assets/illustrations/gisNetworkO0.svg',
+      },
+      {
+        id: 2,
+        title: 'Current earnings',
+        content: earnings,
+        symbol: '/assets/illustrations/Vector.svg',
+      },
+      {
+        id: 3,
+        title: 'Network width',
+        content: networkWidth,
+        symbol: 'assets/illustrations/Vector (1).svg',
+      },
+      {
+        id: 4,
+        title: 'Network length',
+        content: networkLength,
+        symbol: 'assets/illustrations/Vector (2).svg',
+      },
+    ]))
+  }, [networkSize, earnings, networkWidth, networkLength])
   
   return (
     <div
