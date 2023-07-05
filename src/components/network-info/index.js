@@ -10,25 +10,25 @@ const NetworkInfo = ({ earnings, networkSize, networkWidth, networkLength }) => 
         id: 1,
         title: 'Network size',
         content: networkSize,
-        symbol: '/assets/illustrations/gisNetworkO0.svg',
+        symbol: '/assets/theme/network-info/light/network-size.svg',
       },
       {
         id: 2,
         title: 'Current earnings',
         content: earnings,
-        symbol: '/assets/illustrations/Vector.svg',
+        symbol: '/assets/theme/network-info/light/current-earnings.svg',
       },
       {
         id: 3,
         title: 'Network width',
         content: networkWidth,
-        symbol: 'assets/illustrations/Vector (1).svg',
+        symbol: 'assets/theme/network-info/light/network-width.svg',
       },
       {
         id: 4,
         title: 'Network length',
         content: networkLength,
-        symbol: 'assets/illustrations/Vector (2).svg',
+        symbol: 'assets/theme/network-info/light/network-length.svg',
       },
     ]))
   }, [networkSize, earnings, networkWidth, networkLength])
