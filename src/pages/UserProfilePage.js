@@ -6,17 +6,17 @@ import { getPartnerAccountsNetwork } from '../service/ash_mlm';
 import Partner_Accounts_Network from '../_mock/partner_accounts_network';
 
 const UserProfilePage = () => {
-  const [partnerAccountNetwork, setPartnerAccountNetwork] = useState([]);
-
+  const [partnerAccountNetwork, setPartnerAccountNetwork] = useState({});
+  const [userId, setUserId] = useState(null);
   useEffect(() => {
     // setPartnerAccountNetwork(() => Partner_Accounts_Network);
-    fetchPartnerAccountsNetwork();
-  }, []);
+    fetchPartnerAccountsNetwork(userId);
+  }, [userId]);
 
-  const fetchPartnerAccountsNetwork = async () => {
+  const fetchPartnerAccountsNetwork = async (userId) => {
     try {
       console.log('[USER_PROFILE_PAGE]::[fetchPartnerAccountsNetwork]:: Start');
-      const accountsData = await getPartnerAccountsNetwork();
+      const accountsData = await getPartnerAccountsNetwork(userId);
       console.log('[USER_PROFILE_PAGE]::[fetchPartnerAccountsNetwork]:: response', accountsData);
       if(accountsData) {
         setPartnerAccountNetwork(() => accountsData);
@@ -25,10 +25,14 @@ const UserProfilePage = () => {
       console.log('[USER_PROFILE_PAGE]::[fetchPartnerAccountsNetwork]:: err', err);
     }
   }
+
+  const handleSelectedUserClick = (user) => {
+    setUserId(() => user.id)
+  }
   return (
     <Container>
-      <ProfileHeader />
-      <NetworksByLevel networks={partnerAccountNetwork}/>
+      <ProfileHeader currentUser={partnerAccountNetwork}/>
+      <NetworksByLevel networks={partnerAccountNetwork.network} handleUserClick={handleSelectedUserClick}/>
     </Container>
   )
 }

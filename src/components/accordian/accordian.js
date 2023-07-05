@@ -1,10 +1,5 @@
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
-import React from "react";
-import { Typography } from "@mui/material";
+import { Typography, Accordion,  AccordionDetails, AccordionSummary } from "@mui/material";
 
 const mystyle = {
   color: "var(--theme-font-color-secondary)",
@@ -15,7 +10,7 @@ const mystyle = {
   marginTop: "16px",
 };
 
-function CustomAccordian({ data }) {
+function CustomAccordian({ data, handleUserClick }) {
   return (
     <>
       {data && data.map((item) => (
@@ -28,22 +23,21 @@ function CustomAccordian({ data }) {
               id="panel1a-header"
             >
               <div className="k-flex k-fdr k-jcsb" style={{ width: "100%" }}>
-                <div>{item.fname}</div>
-                <div className="k-mr32">{item.mobile_number}</div>
+                <Typography onClick={() => handleUserClick(item)}>{item.name}</Typography>
+                <Typography className="k-mr32">{item.mobile}</Typography>
               </div>
             </AccordionSummary>
             <AccordionDetails className="theme__typography--secondary theme__palette--tertiary">
-              {/* <div className="k-flex">
-                <div>Newtwork size: {item.newtwork_size}</div>
-                <div className="k-pl4 k-pr4">|</div>
-                <div className="">Level {item.level}</div>
+              <div className="k-flex">
+                <Typography>Newtwork size {item.network_width}</Typography>
+                {/* <Typography className="k-pl4 k-pr4">|</Typography>
+                <Typography className="">Level {item.level}</Typography> */}
               </div>
               <div className="k-flex">
-                <div>Earnings {item.earning}</div>
-                <div className="k-pl4 k-pr4">|</div>
-                <div className="">Last payout {item.earning}</div>
-              </div> */}
-              <Typography>No data to show</Typography>
+                <Typography>Earnings {item.earnings}</Typography>
+                <Typography className="k-pl4 k-pr4">|</Typography>
+                <Typography className="">Last payout {item.last_payout}</Typography>
+              </div>
             </AccordionDetails>
           </Accordion>
         </div>

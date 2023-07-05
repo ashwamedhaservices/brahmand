@@ -82,14 +82,19 @@ export const getPartnerAccounts = async () => {
   }
 } 
 
-export const getPartnerAccountsNetwork = async () => {
+export const getPartnerAccountsNetwork = async (id) => {
   try {
     console.log('[services]::[getPartnerAccountsNetwork]:: Enter')
     const getHeader = await getHeaderOptions();
+    let url = getPartnerAccountsNetworkApi();
+    if(id) {
+      url += `?id=${id}`
+    }
+    console.log('[services]::[getPartnerAccountsNetwork] url', url);
     console.log('[services]::[getPartnerAccountsNetwork]::[header]::', getHeader);
     let response = await axios({
       method: 'get',
-      url: getPartnerAccountsNetworkApi(),
+      url: url,
       headers: getHeader,
     });
     response = response.data;

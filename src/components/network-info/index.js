@@ -1,21 +1,47 @@
-import React from "react";
-import Network_Info from "../../_mock/network_info";
+import React, { useState } from "react";
 import "./index.css";
 
-const NetworkInfo = () => {
+const NetworkInfo = ({ earnings, networkSize, networkWidth, networkLength }) => {
+  const [networkInfo] = useState([
+    {
+      id: 1,
+      title: 'Network size',
+      content: networkSize,
+      symbol: '/assets/illustrations/gisNetworkO0.svg',
+    },
+    {
+      id: 2,
+      title: 'Current earnings',
+      content: earnings,
+      symbol: '/assets/illustrations/Vector.svg',
+    },
+    {
+      id: 3,
+      title: 'Network width',
+      content: networkWidth,
+      symbol: 'assets/illustrations/Vector (1).svg',
+    },
+    {
+      id: 4,
+      title: 'Network length',
+      content: networkLength,
+      symbol: 'assets/illustrations/Vector (2).svg',
+    },
+  ]);
+  
   return (
     <div
-      className="k-mt32 k-flex k-fnw scrollbar__container scrollbar"
+      className="k-mt16 k-flex k-fnw scrollbar__container scrollbar"
       style={{ paddingBottom: "23px" }}
     >
-      {Network_Info.map((card) => (
+      {networkInfo.map((card) => (
         <div className="network-container" key={card.id}>
           <div key={card.id} className="symbol-card-container">
             <div className="symbol-container" key={card.id}>
               <img src={card.symbol} alt={card.title} />{" "}
             </div>
             <div className="text-container">
-              <h3 className="no-wrap">{card.title}</h3>
+              <h3 className="">{card.title}</h3>
               <p>{card.content}</p>
             </div>
           </div>
