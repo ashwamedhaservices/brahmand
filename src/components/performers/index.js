@@ -12,7 +12,7 @@ const Performers = ({ title, performer, isSecondary }) => {
           <Performer key={index} performer={performer} isSecondary={isSecondary}/>
         ))
       ) : (
-        <Typography className="theme__typography--secondary theme__palette--tertiary theme__fw--seconary">
+        <Typography className="theme__typography--secondary theme__palette--tertiary theme__fw--secondary">
           No data
         </Typography>
       )}

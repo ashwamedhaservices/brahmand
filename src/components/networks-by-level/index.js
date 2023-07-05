@@ -12,7 +12,7 @@ const NetworksByLevel = ({ networks, handleUserClick }) => {
       {networks && networks.length > 0 ? (
         <CustomAccordian data={networks} handleUserClick={handleUserClick}/>
       ) : (
-        <Typography className="k-pl16 theme__typography--secondary theme__palette--tertiary theme__fw--seconary">
+        <Typography className="k-pl16 theme__typography--secondary theme__palette--tertiary theme__fw--secondary">
           No data
         </Typography>
       )}

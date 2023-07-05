@@ -15,7 +15,7 @@ const Payouts = ({ payouts }) => {
             ))}
         </Container>
       ) : (
-        <Typography className="k-pl16 theme__typography--secondary theme__palette--tertiary theme__fw--seconary">
+        <Typography className="k-pl16 theme__typography--secondary theme__palette--tertiary theme__fw--secondary">
           No data
         </Typography>
       )}
