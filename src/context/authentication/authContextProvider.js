@@ -29,7 +29,7 @@ export const AuthContextProvider = (props) => {
         {
         type: SIGN_IN_USER, 
         payload: {
-          username: JSON.parse(storageGetItem('users')).full_name,
+          username: JSON.parse(await storageGetItem('users')).full_name,
           otp
         }
       })
@@ -49,13 +49,13 @@ export const AuthContextProvider = (props) => {
     // } 
     else {
       // User is logged out
-      storageClear();
+      await storageClear();
       dispatch({type: SIGN_OUT_USER})
       return response.message
     }
   }
-  const logoutUser = () => {
-    storageClear();
+  const logoutUser = async () => {
+    await storageClear();
     dispatch({type: SIGN_OUT_USER})
   }
   return <AuthContext.Provider 

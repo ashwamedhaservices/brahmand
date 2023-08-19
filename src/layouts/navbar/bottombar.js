@@ -35,6 +35,9 @@ const Bottombar = () => {
         <Button href="/user-profile" variant="contained" className={location && location.pathname === '/user-profile' ? 'bottombar__button--selected' : 'bottombar__button'}>
           <Avatar src="/assets/illustrations/Customer.svg" alt="Profile" />
         </Button>
+        <Button href="/kyc" variant="contained" className={location && location.pathname && location.pathname.split('/').includes('kyc') ? 'bottombar__button--selected' : 'bottombar__button'}>
+          <Avatar src="/assets/illustrations/Customer.svg" alt="kyc" />
+        </Button>
       </BottomNavigation>
     </Paper>
   );
