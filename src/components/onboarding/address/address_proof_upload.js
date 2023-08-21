@@ -3,19 +3,22 @@ import { useNavigate } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import axios from 'axios';
-import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
+import { Stack, AppBar, IconButton, Toolbar, Typography, FormControl, Select, MenuItem } from '@mui/material';
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import { Container } from '@mui/system';
-import { getAccountsOnboarding, putAccountsKyc } from '../../../service/ash_mlm';
+import { getAccountsKyc, getAccountsOnboarding, postFileUpload, putAccountsKyc, putFileUpload } from '../../../service/ash_mlm';
+import ImageInput from '../../image-input';
 
 const AddressProofUpload = () => {
   const navigate = useNavigate();
   const [kycId, setKycId] = useState(null);
   const [isKyced, setIsKyced] = useState(false);
   const [currentPage, setCurrentPage] = useState('');
+  const [uploadImagePercentage, setUploadImagePercentage] = useState(0);
   const [addressProofData, setAddressProofData] = useState({
     address_proof_no: '',
-    address_proof_type: '',
+    address_proof_url: '',
+    address_proof_type: 'aadhaar',
   });
   const [errors, setErrors] = useState({});
 
@@ -25,10 +28,11 @@ const AddressProofUpload = () => {
 
   const fetchKycData = async () => {
     try {
-      const response = await axios.get('/api/getAccountsKyc');
-      setKycId(response.data.id);
+      const kyc = await getAccountsKyc();
+      console.log("[address]::[_fetchKycData]::", kyc);
+      setKycId(kyc.id);
     } catch (error) {
-      console.error(error);
+      console.error("[address]::[_fetchKycData]::err", error);
     }
   };
 
@@ -73,14 +77,57 @@ const AddressProofUpload = () => {
     setAddressProofData(prevData => ({ ...prevData, [name]: value }));
   };
 
-  const handleAddressSubmit = async event => {
-   
+  const handleImage = async (file) => {
+    let inputFile = { ...file[0] };
+    inputFile.type = file[0].name.split(".")[1];
+    inputFile.name = file[0].name.split(".")[0];
+    inputFile.location = addressProofData && addressProofData.address_proof_type ? addressProofData.address_proof_type: 'aadhaar';
+    console.log("file:", file[0], inputFile);
+
+    // Creating the file location
+    const res = await postFileUpload({
+      file: {
+        ...inputFile,
+      },
+    });
+    console.log("upload course res", res);
+    const uploadImageLocation = res.message.split("?")[0];
+    if (res) {
+      setAddressProofData({
+        ...addressProofData,
+        address_proof_url: uploadImageLocation,
+      });
+    }
+
+    // Uploading the file to the Storage URL of file location
+    const resFileUpload = await putFileUpload(
+      res.message,
+      file[0],
+      (progressEvent) => {
+        const percentage = parseInt(
+          Math.round((progressEvent.loaded * 100) / progressEvent.total)
+        );
+        setUploadImagePercentage(percentage);
+        return percentage; // Because you were returning the percentage before.
+      }
+    );
+    console.log("uploaded course image", resFileUpload);
+  };
+
+  const handleAddressSubmit = async () => {
+    console.log(addressProofData);
+    await updateAddressProof();
   };
 
   const buttonDisabled = () => {
-    return false
+    return (
+      addressProofData &&
+      (!addressProofData.address_proof_no ||
+        !addressProofData.address_proof_type ||
+        !addressProofData.address_proof_url)
+    );
   }
-  
+
   return (
     <div>
       <AppBar
@@ -106,7 +153,7 @@ const AddressProofUpload = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Container>
+      <Container style={{ padding: "16px", marginTop: "32px" }}>
         <TextField
           label="Enter address proof no"
           type="text"
@@ -119,20 +166,35 @@ const AddressProofUpload = () => {
           margin="normal"
         />
 
-        <TextField
-          label="Address proof type"
-          name="address_proof_type"
-          select
-          value={addressProofData.address_proof_type}
-          onChange={handleInputChange}
-          error={Boolean(errors.address_proof_type)}
-          helperText={errors.address_proof_type}
-          fullWidth
-          margin="normal"
-        >
-          <option value="aadhaar">Aadhaar</option>
-          <option value="passport">Passport</option>
-        </TextField>
+         {/* Address proof type */}
+        <FormControl fullWidth variant="outlined" margin="normal">
+          <Select
+            name="address_proof_type"
+            value={addressProofData.address_proof_type}
+            onChange={handleInputChange}
+            label="Address proof type"
+          >
+            <MenuItem value="aadhaar">Aadhaar</MenuItem>
+            <MenuItem value="passport">Passport</MenuItem>
+          </Select>
+        </FormControl>
+
+        <Stack
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="subtitle1" gutterBottom>
+              Upload  {addressProofData.address_proof_type} image
+            </Typography>
+            <ImageInput
+              previewImage={addressProofData.address_proof_url}
+              handleImage={handleImage}
+              percentage={uploadImagePercentage}
+            />
+          </Stack>
 
         <Button
           variant="contained"
