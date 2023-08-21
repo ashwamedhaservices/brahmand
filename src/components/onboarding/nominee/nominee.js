@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react';
-// import { useHistory } from 'react-router-dom';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Container,
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+} from "@mui/material";
+import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
+import { useNavigate } from "react-router-dom";
 import { getAccountsKyc, getAccountsOnboarding, postAccountsKycedNominees } from '../../../service/ash_mlm';
 
 const Nominee = () => {
-  // const history = useHistory();
+  const navigate = useNavigate();
   const [kycId, setKycId] = useState(null);
   const [isKyced, setIsKyced] = useState(false);
   const [currentPage, setCurrentPage] = useState('');
@@ -23,31 +33,47 @@ const Nominee = () => {
   const fetchKycData = async () => {
     try {
       const kyc = await getAccountsKyc();
+      console.log("[nominee]::[_fetchKycData]::", kyc);
       setKycId(kyc.id);
     } catch (error) {
-      console.error(error);
+      console.error("[nominee]::[_fetchKycData]::err", error);
     }
-  };
+  };;
 
   const createNominee = async () => {
     try {
+      console.log("[nominee]::[createNominee]:: Enter", nomineeData);
       const nomineePayload = { nominee: nomineeData };
+      console.log("[nominee]::[createNominee]:: Enter", nomineePayload);
+
       const data = await postAccountsKycedNominees(nomineePayload, kycId);
-      await fetchOnboardingStatus();
+      console.log("[nominee]::[createNominee]::[response]::", data);
+
+      await _fetchOnboardingStatus();
     } catch (error) {
-      console.error(error);
+      console.error("[nominee]::[createNominee]::err", error);
     }
   };
 
-  const fetchOnboardingStatus = async () => {
+  const _fetchOnboardingStatus = async () => {
     try {
+      console.log("[NomineePage]::[_fetchOnboardingStatus]");
       const onboarding = await getAccountsOnboarding();
-      const { status, flow } = onboarding;
-      const pages = flow.filter(page => !page.status);
-      setIsKyced(status);
-      setCurrentPage(pages.length > 0 ? pages[0].page : '');
-    } catch (error) {
-      console.error(error);
+
+      const flow = onboarding["flow"];
+
+      const pages = flow.filter((page) => !page["status"]);
+      console.log(pages);
+
+      if (onboarding["status"]) { // This condition is changed
+        const path = `/kyc`;
+        console.log(path);
+        navigate(path, { replace: true });
+      }
+
+      console.log(`[NomineePage]::[_fetchOnboardingStatus]`, pages, onboarding);
+    } catch (err) {
+      console.log(`[NomineePage]::[_fetchOnboardingStatus]::err ${err}`);
     }
   };
 
@@ -64,9 +90,46 @@ const Nominee = () => {
     }
   };
 
+  const handleAddressSubmit = async () => {
+    console.log(nomineeData);
+    await createNominee();
+  }
+
+  const buttonDisabled = () => {
+    return (
+      nomineeData &&
+      (!nomineeData.name ||
+        !nomineeData.dob ||
+        !nomineeData.relationship )
+    );
+  };
+
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <AppBar
+        position="static"
+        style={{
+          backgroundColor: "var(--theme-background-secondary)",
+          elevation: 0,
+        }}
+      >
+        <Toolbar>
+          <IconButton onClick={() => navigate("/kyc", { replace: true })}>
+            <ArrowBackSharpIcon
+              color="primary"
+              style={{ color: "var(--theme-primary-navbar-color)" }}
+            />
+          </IconButton>
+          <Typography
+            variant="h6"
+            color="primary"
+            style={{ color: "var(--theme-primary-navbar-color)" }}
+          >
+            Nominee Details
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Container style={{ padding: "16px", marginTop: "32px" }}>
         <TextField
           label="Enter nominee name"
           type="text"
@@ -88,7 +151,7 @@ const Nominee = () => {
         />
 
         <TextField
-          label="RelationShip with nominee"
+          label="Relationship with nominee"
           name="relationship"
           select
           value={nomineeData.relationship}
@@ -106,11 +169,23 @@ const Nominee = () => {
         <Button
           variant="contained"
           color="primary"
-          type="submit"
+          style={{
+            marginTop: "16px",
+            color: `${
+              buttonDisabled() ? "white" : "var(--theme-background-tertiary)"
+            }`,
+            backgroundColor: `${
+              buttonDisabled()
+                ? "var(--theme-background-tertiary)"
+                : "var(--theme-primary-color)"
+            }`,
+          }}
+          onClick={handleAddressSubmit}
+          disabled={buttonDisabled()}
         >
           Continue
         </Button>
-      </form>
+      </Container>
     </div>
   );
 };
