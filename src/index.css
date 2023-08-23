@@ -151,3 +151,8 @@ a {
 .no-wrap{
   white-space: normal;
 }
+
+.card-with-background {
+  background: var(--theme-background-quaternary);
+  border-radius: 12px;
+}
