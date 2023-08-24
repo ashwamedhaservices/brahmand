@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { createSearchParams, Outlet, useSearchParams } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 // @mui
 import { styled } from "@mui/material/styles";
@@ -40,6 +40,7 @@ const Main = styled("div")(({ theme }) => ({
 
 const Onboarding = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const location = useLocation();
   const [isKyced, setIsKyced] = useState(false);
   const [kyc, setKyc] = useState({});
@@ -54,7 +55,7 @@ const Onboarding = () => {
       fetchAllData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isKyced]);
+  }, [isKyced, searchParams]);
 
   const fetchAllData = async () => {
     fetchKycData();
@@ -62,6 +63,7 @@ const Onboarding = () => {
     fetchAddressData();
     fetchNomineeData();
   };
+
   const _fetchOnboardingStatus = async () => {
     try {
       console.log("[KycPage]::[_fetchOnboardingStatus]");
@@ -127,14 +129,38 @@ const Onboarding = () => {
     }
   };
 
+  const handleNavigate = (pathname, params) => {
+    navigate({
+      pathname,
+      search: `?${createSearchParams(params)}`,
+    }, { replace: true });
+  }
+
+  const handleKycClick = (kyc) => {
+    handleNavigate('/kyc/pan', { id: kyc.id });
+  }
+
+  const handleBankClick = (bank) => {
+    handleNavigate('/kyc/bank', { id: bank.id });
+  }
+
+  const handleNomineeClick = (nominee) => {
+    handleNavigate('/kyc/nominee', { id: nominee.id });
+  }
+
+  const handleAddressClick = (address) => {
+    handleNavigate('/kyc/address', { id: address.id });
+  }
+
+
   return (
     <StyledRoot>
       {location && location.pathname && location.pathname === "/kyc" ? (
         <Container>
-          {kyc && <KycCard kyc={kyc}/>}
-          {bank && <BankCard banks={bank} />}
-          {nominee && <NomineeCard nominees={nominee} />}
-          {address && <AddressCard addresses={address} />}
+          {kyc && <KycCard kyc={kyc} handleClick={handleKycClick}/>}
+          {bank && <BankCard banks={bank} handleClick={handleBankClick}/>}
+          {nominee && <NomineeCard nominees={nominee} handleClick={handleNomineeClick}/>}
+          {address && <AddressCard addresses={address} handleClick={handleAddressClick}/>}
         </Container>
       ) : (
         <Main>

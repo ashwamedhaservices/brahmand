@@ -38,7 +38,7 @@ const Nominee = () => {
     } catch (error) {
       console.error("[nominee]::[_fetchKycData]::err", error);
     }
-  };;
+  };
 
   const createNominee = async () => {
     try {

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -10,13 +10,17 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Grid } from "@mui/material";
 import {
+  getAccountsKyc,
   getAccountsOnboarding,
   postAccountsKyc,
+  putAccountsKyc,
 } from "../../../service/ash_mlm";
 import { panNumberValidation } from "../../../utils/validations";
+import { replace } from "lodash";
 
 const Pan = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [panNumberError, setPanNumberError] = useState("");
 
   const [kycData, setKycData] = useState({
@@ -25,15 +29,47 @@ const Pan = () => {
     id_proof_type: "pan",
   });
 
+  useEffect(() => {
+    const kycId = searchParams.get('id');
+    if(kycId) {
+      _fetchKycData();
+    }
+  }, [])
+
+  const _fetchKycData = async () => {
+    try {
+      const kyc = await getAccountsKyc();
+      console.log("[nominee]::[_fetchKycData]::", kyc);
+      setKycData({...kyc})
+    } catch (error) {
+      console.error("[nominee]::[_fetchKycData]::err", error);
+    }
+  };
+
   const _createKyc = async () => {
-    console.log(`[pan]::[_createKyc]:: Enter ${kycData}`);
+    console.log(`[_createKyc]:: Enter ${kycData}`);
     const kycPayload = { kyc: kycData };
-    console.log(`[pan]::[_createKyc]:: ${kycPayload}`);
+    console.log(`[_createKyc]:: ${kycPayload}`);
 
     const data = await postAccountsKyc(kycPayload);
-    console.log(`[pan]::[_createKyc]::[response]:: ${data}`);
+    console.log(`[_createKyc]::[response]:: ${data}`);
 
     await _fetchOnboardingStatus();
+  };
+
+  const updateKyc = async () => {
+    try {
+      console.log("[_updateKyc]:: Enter", kycData);
+      const kycPayload = { kyc: kycData };
+      console.log("[_updateKyc]::", kycPayload);
+
+      const data = await putAccountsKyc(kycPayload, kycData.id);
+      console.log("[_updateKyc]::[response]::", data);
+
+      navigate('/kyc', {replace: true});
+    } catch (error) {
+      console.error("[_updateKyc]::err", error);
+    }
   };
 
   const _fetchOnboardingStatus = async () => {
@@ -65,6 +101,11 @@ const Pan = () => {
 
   const handlePanSubmit = async () => {
     console.log(kycData);
+    if(kycData && kycData.id) {
+      console.log('Update');
+      updateKyc();
+      return
+    }
     await _createKyc();
   };
 
@@ -151,7 +192,7 @@ const Pan = () => {
           onClick={handlePanSubmit}
           disabled={buttonDisabled()}
         >
-          Continue
+          {kycData && kycData.id ? 'Update' : 'Continue'}
         </Button>
       </Container>
     </div>
