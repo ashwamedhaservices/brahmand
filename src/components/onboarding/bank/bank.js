@@ -32,11 +32,11 @@ const Bank = () => {
   const [ifscError, setIfscError] = useState("");
 
   useEffect(() => {
+    fetchKycData();
     const bankId = searchParams.get('id');
     if(bankId) {
       _fetchKycBankData(bankId);
     }
-    fetchKycData();
   }, []);
 
   const fetchKycData = async () => {

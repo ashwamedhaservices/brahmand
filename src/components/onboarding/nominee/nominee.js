@@ -26,11 +26,11 @@ const Nominee = () => {
   });
 
   useEffect(() => {
+    fetchKycData();
     const nomineeId = searchParams.get('id');
     if(nomineeId) {
       _fetchKycNomineeData(nomineeId);
     }
-    fetchKycData();
   }, []);
 
   const fetchKycData = async () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   AppBar,
   Toolbar,
@@ -12,15 +12,17 @@ import {
   FormControl,
 } from "@mui/material";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   getAccountsKyc,
   getAccountsOnboarding,
-  postAccountsKycedAddress,
 } from "../../../service/ash_mlm";
+import { KycAddressContext } from "../../../context/address/kycAddressContextProvider";
 
 function Address() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { fetchKycAddressData, createKycAddress, updateKycAddress } = useContext(KycAddressContext)
   const [kycId, setKycId] = useState(0);
   const [addressData, setAddressData] = useState({
     name: "",
@@ -36,6 +38,10 @@ function Address() {
 
   useEffect(() => {
     fetchKycData();
+    const addressId = searchParams.get('id');
+    if(addressId) {
+      _fetchKycAddressData(addressId);
+    }
   }, []);
 
   const fetchKycData = async () => {
@@ -48,21 +54,23 @@ function Address() {
     }
   };
 
-  const createKycAddress = async () => {
-    try {
-      console.log("[address]::[_createKycAddress]:: Enter", addressData);
-      const addressPayload = { address: addressData };
-      console.log("[address]::[_createKycAddress]::", addressPayload);
+  const _fetchKycAddressData = async (addressId) => {
+    const addresses = await fetchKycAddressData(kycId);
+    setAddressData(() => ({
+      ...addresses.filter((address) => address.id === Number(addressId))[0]
+    }))
+  }
 
-      const data = await postAccountsKycedAddress(addressPayload, kycId);
-      console.log("[address]::[_createKycAddress]::[response]::", data);
-
-      await _fetchOnboardingStatus();
-    } catch (error) {
-      console.error("[address]::[_createKycAddress]::err", error);
-    }
+  const _createKycAddress = async () => {
+    await createKycAddress(addressData, kycId);
+    await _fetchOnboardingStatus();
   };
 
+  const _updateKycAddress = async () => {
+    await updateKycAddress(addressData);
+    navigate('/kyc', {replace: true});
+  }
+  
   const _fetchOnboardingStatus = async () => {
     try {
       console.log("[ProfilePage]::[_fetchOnboardingStatus]");
@@ -87,7 +95,11 @@ function Address() {
 
   const handleAddressSubmit = async () => {
     console.log(addressData);
-    await createKycAddress();
+    if(addressData && addressData.id) {
+      await _updateKycAddress();
+      return
+    }
+    await _createKycAddress();
   };
 
   const handleAddressDetail = (event) => {

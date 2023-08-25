@@ -1,55 +1,55 @@
 import { createContext } from 'react';
-import { getAccountsKyc, postAccountsKyc, putAccountsKyc } from '../../service/ash_mlm';
+import { getAccountsKycedAddress, postAccountsKycedAddress, putAccountsKycedAddress } from '../../service/ash_mlm';
 
 export const KycAddressContext = createContext();
 
 export const KycAddressContextProvider = (props) => {
-  // TODO: Error Case Needs to be handled
-  const _fetchKycData = async () => {
+
+  const _fetchKycAddressData = async (kycId) => {
     try {
-      const kyc = await getAccountsKyc();
-      console.log("[KycAddressContextProvider]::[_fetchKycData]::", kyc);
-      return kyc;
+      const nominees = await getAccountsKycedAddress(kycId);
+      console.log("[KycAddressContextProvider]::[_fetchKycAddressData]::", nominees);
+      return nominees;
     } catch (error) {
-      console.error("[KycAddressContextProvider]::[_fetchKycData]::err", error);
+      console.error("[KycAddressContextProvider]::[_fetchKycAddressData]::err", error);
       return {};
     }
   };
 
-  const _createKyc = async (kyc) => {
+  const _createKycAddress = async (address, kycId) => {
     /** Cases
      * 1.) KYC Already exist
     */
     try {
-      const payload = { kyc: kyc };
-      console.log(`[KycAddressContextProvider]::[_createKyc]:: Enter ${payload}`);
-      const data = await postAccountsKyc(payload);
-      console.log("[KycAddressContextProvider]::[_createKyc]::", data);
+      const payload = { address: address };
+      console.log('[KycAddressContextProvider]::[_createKycAddress]:: Enter', payload);
+      const data = await postAccountsKycedAddress(payload, kycId);
+      console.log("[KycAddressContextProvider]::[_createKycAddress]::", data);
       return data
     } catch (error) {
-      console.error("[KycAddressContextProvider]::[_createKyc]::err", error);
+      console.error("[KycAddressContextProvider]::[_createKycAddress]::err", error);
       return {}
     }
   };
 
-  const _updateKyc = async (kyc) => {
+  const _updateKycAddress = async (address) => {
     try {
-      const payload = { kyc: kyc };
-      console.log(`[KycAddressContextProvider]::[_updateKyc]:: Enter ${payload}`);
-      const data = await putAccountsKyc(payload, kyc.id);
-      console.log(`[KycAddressContextProvider]::[_updateKyc]:: ${data}`);
+      const payload = { address: address };
+      console.log('[KycAddressContextProvider]::[_updateKycAddress]:: Enter', payload);
+      const data = await putAccountsKycedAddress(payload, address.id);
+      console.log('[KycAddressContextProvider]::[_updateKycAddress]:: ', data);
       return data
     } catch (error) {
-      console.error("[KycAddressContextProvider]::[_updateKyc]::err", error);
+      console.error("[KycAddressContextProvider]::[_updateKycAddress]::err", error);
       return {}
     }
   };
 
   return <KycAddressContext.Provider
    value={{
-     fetchKycData: _fetchKycData,
-     createKyc: _createKyc,
-     updateKyc: _updateKyc,
+     fetchKycAddressData: _fetchKycAddressData,
+     createKycAddress: _createKycAddress,
+     updateKycAddress: _updateKycAddress,
    }}>
     {props.children}
   </KycAddressContext.Provider>

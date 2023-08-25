@@ -37,7 +37,7 @@ export const getAccountsKycedAddressUrl = (kycId) => `${API_BASE_URL}/${API_ACCO
 export const postAccountsKycedAddressUrl = (kycId) => `${API_BASE_URL}/${API_ACCOUNTS}${API_BASE_VERSION}/kycs/${kycId}/addresses.json`;
 
 // For Accounts Kyced Address PUT
-export const putAccountsKycedAddressUrl = (addressId) => `${API_BASE_URL}/${API_ACCOUNTS}${API_BASE_VERSION}/address/${addressId}.json`;
+export const putAccountsKycedAddressUrl = (addressId) => `${API_BASE_URL}/${API_ACCOUNTS}${API_BASE_VERSION}/addresses/${addressId}.json`;
 
 // For Accounts Kyced nominees GET
 export const getAccountsKycedNomineesUrl = (kycId) => `${API_BASE_URL}/${API_ACCOUNTS}${API_BASE_VERSION}/kycs/${kycId}/nominees.json`;
