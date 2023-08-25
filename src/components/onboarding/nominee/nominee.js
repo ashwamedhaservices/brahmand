@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -7,19 +7,18 @@ import {
   Container,
   Button,
   TextField,
-  Select,
   MenuItem,
-  FormControl,
 } from "@mui/material";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
-import { useNavigate } from "react-router-dom";
-import { getAccountsKyc, getAccountsOnboarding, postAccountsKycedNominees } from '../../../service/ash_mlm';
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { getAccountsKyc, getAccountsOnboarding } from '../../../service/ash_mlm';
+import { KycNomineeContext } from '../../../context/nominee/kycNomineeContextProvider';
 
 const Nominee = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { fetchKycNomineeData, createKycNominee, updateKycNominee } = useContext(KycNomineeContext)
   const [kycId, setKycId] = useState(null);
-  const [isKyced, setIsKyced] = useState(false);
-  const [currentPage, setCurrentPage] = useState('');
   const [nomineeData, setNomineeData] = useState({
     name: '',
     dob: '',
@@ -27,6 +26,10 @@ const Nominee = () => {
   });
 
   useEffect(() => {
+    const nomineeId = searchParams.get('id');
+    if(nomineeId) {
+      _fetchKycNomineeData(nomineeId);
+    }
     fetchKycData();
   }, []);
 
@@ -40,20 +43,22 @@ const Nominee = () => {
     }
   };
 
-  const createNominee = async () => {
-    try {
-      console.log("[nominee]::[createNominee]:: Enter", nomineeData);
-      const nomineePayload = { nominee: nomineeData };
-      console.log("[nominee]::[createNominee]:: Enter", nomineePayload);
+  const _fetchKycNomineeData = async (nomineeId) => {
+    const nominees = await fetchKycNomineeData(kycId);
+    setNomineeData(() => ({
+      ...nominees.filter((nominee) => nominee.id === Number(nomineeId))[0]
+    }))
+  }
 
-      const data = await postAccountsKycedNominees(nomineePayload, kycId);
-      console.log("[nominee]::[createNominee]::[response]::", data);
-
-      await _fetchOnboardingStatus();
-    } catch (error) {
-      console.error("[nominee]::[createNominee]::err", error);
-    }
+  const _createNominee = async () => {
+    await createKycNominee(nomineeData, kycId);
+    await _fetchOnboardingStatus();
   };
+
+  const _updateKycNominee = async () => {
+    await updateKycNominee(nomineeData);
+    navigate('/kyc', {replace: true});
+  }
 
   const _fetchOnboardingStatus = async () => {
     try {
@@ -82,17 +87,13 @@ const Nominee = () => {
     setNomineeData(prevData => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = async event => {
-    event.preventDefault();
-    await createNominee();
-    if (!isKyced) {
-      // history.push(profile); // Replace with your actual profile route
-    }
-  };
-
   const handleAddressSubmit = async () => {
     console.log(nomineeData);
-    await createNominee();
+    if(nomineeData && nomineeData.id) {
+      await _updateKycNominee();
+      return
+    }
+    await _createNominee();
   }
 
   const buttonDisabled = () => {
@@ -183,7 +184,7 @@ const Nominee = () => {
           onClick={handleAddressSubmit}
           disabled={buttonDisabled()}
         >
-          Continue
+          {nomineeData && nomineeData.id ? 'Update' : 'Continue'}
         </Button>
       </Container>
     </div>

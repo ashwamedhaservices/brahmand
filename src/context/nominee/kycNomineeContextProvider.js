@@ -1,55 +1,55 @@
 import { createContext } from 'react';
-import { getAccountsKyc, postAccountsKyc, putAccountsKyc } from '../../service/ash_mlm';
+import { getAccountsKycedNominees, postAccountsKyc, postAccountsKycedNominees, putAccountsKyc, putAccountsKycedNominees } from '../../service/ash_mlm';
 
 export const KycNomineeContext = createContext();
 
 export const KycNomineeContextProvider = (props) => {
   // TODO: Error Case Needs to be handled
-  const _fetchKycData = async () => {
+  const _fetchKycNomineeData = async (kycId) => {
     try {
-      const kyc = await getAccountsKyc();
-      console.log("[KycNomineeContextProvider]::[_fetchKycData]::", kyc);
-      return kyc;
+      const nominees = await getAccountsKycedNominees(kycId);
+      console.log("[KycNomineeContextProvider]::[_fetchKycNomineeData]::", nominees);
+      return nominees;
     } catch (error) {
-      console.error("[KycNomineeContextProvider]::[_fetchKycData]::err", error);
+      console.error("[KycNomineeContextProvider]::[_fetchKycNomineeData]::err", error);
       return {};
     }
   };
 
-  const _createKyc = async (kyc) => {
+  const _createKycNominee = async (nominee, kycId) => {
     /** Cases
      * 1.) KYC Already exist
     */
     try {
-      const payload = { kyc: kyc };
-      console.log(`[KycNomineeContextProvider]::[_createKyc]:: Enter ${payload}`);
-      const data = await postAccountsKyc(payload);
-      console.log("[KycNomineeContextProvider]::[_createKyc]::", data);
+      const payload = { nominee: nominee };
+      console.log(`[KycNomineeContextProvider]::[_createKycNominee]:: Enter ${payload}`);
+      const data = await postAccountsKycedNominees(payload, kycId);
+      console.log("[KycNomineeContextProvider]::[_createKycNominee]::", data);
       return data
     } catch (error) {
-      console.error("[KycNomineeContextProvider]::[_createKyc]::err", error);
+      console.error("[KycNomineeContextProvider]::[_createKycNominee]::err", error);
       return {}
     }
   };
 
-  const _updateKyc = async (kyc) => {
+  const _updateKycNominee = async (nominee) => {
     try {
-      const payload = { kyc: kyc };
-      console.log(`[KycNomineeContextProvider]::[_updateKyc]:: Enter ${payload}`);
-      const data = await putAccountsKyc(payload, kyc.id);
-      console.log(`[KycNomineeContextProvider]::[_updateKyc]:: ${data}`);
+      const payload = { nominee: nominee };
+      console.log(`[KycNomineeContextProvider]::[_updateKycNominee]:: Enter ${payload}`);
+      const data = await putAccountsKycedNominees(payload, nominee.id);
+      console.log('[KycNomineeContextProvider]::[_updateKycNominee]:: ', data);
       return data
     } catch (error) {
-      console.error("[KycNomineeContextProvider]::[_updateKyc]::err", error);
+      console.error("[KycNomineeContextProvider]::[_updateKycNominee]::err", error);
       return {}
     }
   };
 
   return <KycNomineeContext.Provider
    value={{
-     fetchKycData: _fetchKycData,
-     createKyc: _createKyc,
-     updateKyc: _updateKyc,
+     fetchKycNomineeData: _fetchKycNomineeData,
+     createKycNominee: _createKycNominee,
+     updateKycNominee: _updateKycNominee,
    }}>
     {props.children}
   </KycNomineeContext.Provider>

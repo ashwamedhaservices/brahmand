@@ -13,8 +13,7 @@ import {
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import {
   getAccountsKyc,
-  getAccountsOnboarding,
-  postAccountsKycedBank,
+  getAccountsOnboarding
 } from "../../../service/ash_mlm";
 import { accountNoValidation, ifscValidation } from "../../../utils/validations";
 import { KycBankContext } from "../../../context/bank/kycBankContextProvider";
