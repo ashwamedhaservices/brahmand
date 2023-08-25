@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Stack,
   AppBar,
@@ -21,13 +21,17 @@ import ImageInput from "../../image-input";
 
 function PanUpload() {
   const navigate = useNavigate();
-  const [kycId, setKycId] = useState(0);
+  const [searchParams] = useSearchParams();
+  const [kycId, setKycId] = useState(null);
+  const [kycUpdateId, setKycUpdateId] = useState(null);
   const [uploadImagePercentage, setUploadImagePercentage] = useState(0);
   const [kycData, setKycData] = useState({
     id_proof_url: "",
   });
 
   useEffect(() => {
+    const kycId = searchParams.get('id');
+    setKycUpdateId(kycId)
     fetchKycData();
   }, []);
 
@@ -49,6 +53,11 @@ function PanUpload() {
 
       const data = await putAccountsKyc(kycPayload, kycId);
       console.log("[pan]::[_updateKyc]::[response]::", data);
+
+      if(kycUpdateId) {
+        navigate('/kyc', {replace: true});
+        return
+      }
 
       await _fetchOnboardingStatus();
     } catch (error) {
@@ -173,7 +182,7 @@ function PanUpload() {
             onClick={handlePanProofSubmit}
             disabled={buttonDisabled()}
           >
-            Continue
+            {kycUpdateId ? 'Update' : 'Continue' }
           </Button>
         </Container>
       </Container>

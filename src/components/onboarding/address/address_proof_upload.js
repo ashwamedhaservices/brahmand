@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import axios from 'axios';
@@ -11,9 +11,9 @@ import ImageInput from '../../image-input';
 
 const AddressProofUpload = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [kycId, setKycId] = useState(null);
-  const [isKyced, setIsKyced] = useState(false);
-  const [currentPage, setCurrentPage] = useState('');
+  const [kycUpdateId, setKycUpdateId] = useState(null);
   const [uploadImagePercentage, setUploadImagePercentage] = useState(0);
   const [addressProofData, setAddressProofData] = useState({
     address_proof_no: '',
@@ -24,6 +24,8 @@ const AddressProofUpload = () => {
 
   useEffect(() => {
     fetchKycData();
+    const kycId = searchParams.get('id');
+    setKycUpdateId(kycId)
   }, []);
 
   const fetchKycData = async () => {
@@ -43,6 +45,11 @@ const AddressProofUpload = () => {
 
       const data = await putAccountsKyc(addressProofPayload, kycId);
       console.log("[address_proof_upload]::[updateAddressProof]::[response]::", data);
+      
+      if(kycUpdateId) {
+        navigate('/kyc', {replace: true});
+        return
+      }
 
       await _fetchOnboardingStatus();
     } catch (error) {
@@ -213,7 +220,7 @@ const AddressProofUpload = () => {
           onClick={handleAddressSubmit}
           disabled={buttonDisabled()}
         >
-          Continue
+          {kycUpdateId ? 'Update' : 'Continue' }
         </Button>
       </Container>
     </div>

@@ -11,7 +11,8 @@ import {
   getAccountsOnboarding,
 } from "../../service/ash_mlm";
 import { useEffect } from "react";
-import { Container, Grid, Typography } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
+import ImageInput from "../image-input";
 
 const StyledRoot = styled("div")({
   display: "flex",
@@ -140,6 +141,10 @@ const Onboarding = () => {
     handleNavigate('/kyc/pan', { id: kyc.id });
   }
 
+  const handleKycImageClick = (kyc) => {
+    handleNavigate('/kyc/pan-upload', { id: kyc.id });
+  }
+
   const handleBankClick = (bank) => {
     handleNavigate('/kyc/bank', { id: bank.id });
   }
@@ -152,15 +157,20 @@ const Onboarding = () => {
     handleNavigate('/kyc/address', { id: address.id });
   }
 
+  const handleAddressProofImageClick = () => {
+    handleNavigate('/kyc/address-proof-upload', { id: kyc.id });
+  } 
 
   return (
     <StyledRoot>
       {location && location.pathname && location.pathname === "/kyc" ? (
         <Container>
           {kyc && <KycCard kyc={kyc} handleClick={handleKycClick}/>}
+          {kyc && <KycImageCard kyc={kyc} handleClick={handleKycImageClick}/>}
           {bank && <BankCard banks={bank} handleClick={handleBankClick}/>}
           {nominee && <NomineeCard nominees={nominee} handleClick={handleNomineeClick}/>}
           {address && <AddressCard addresses={address} handleClick={handleAddressClick}/>}
+          {address && <AddressProofImageCard kyc={kyc} handleClick={handleAddressProofImageClick}/>}
         </Container>
       ) : (
         <Main>
@@ -330,7 +340,7 @@ const AddressCard = ({ addresses, handleClick }) => {
 const KycCard = ({ kyc, handleClick }) => {
   return (
     <>
-      <CardHeading heading="Information as per KYC" />
+      <CardHeading heading="Information as per kyc" />
       {kyc &&
           <Grid
             container
@@ -347,6 +357,80 @@ const KycCard = ({ kyc, handleClick }) => {
             </Grid>
             <Grid item xs={6} sm={4} md={3} sx={{ p: 1 }}>
               <ItemWithTitleSubtitle title="Id proof number" subtitle={kyc.id_proof_no} />
+            </Grid>
+          </Grid>
+        }
+    </>
+  );
+};
+
+const KycImageCard = ({ kyc, handleClick }) => {
+  return (
+    <>
+      <CardHeading heading="Uploaded pan" />
+      {kyc &&
+          <Grid
+            container
+            spacing={2}
+            className="card-with-background"
+            sx={{ m: 2, width: "calc(100% - 32px)" }}
+            
+          >
+            <Grid item xs={12} sx={{ p: 1 }}>
+              <img 
+                src={kyc.id_proof_url} 
+                height="200px" 
+                width="100%" 
+                alt="upload"
+              />
+            </Grid>
+            <Grid item xs={6} sm={4} md={3} sx={{ p: 1 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              className="theme__palette--primary"
+              style={{ backgroundColor: 'var(--theme-background-tertiary)' }}
+              onClick={() => handleClick(kyc)}
+            >
+              Re Upload
+            </Button>
+            </Grid>
+          </Grid>
+        }
+    </>
+  );
+};
+
+const AddressProofImageCard = ({ kyc, handleClick }) => {
+  return (
+    <>
+      <CardHeading heading="Address proof" />
+      {kyc &&
+          <Grid
+            container
+            spacing={2}
+            className="card-with-background"
+            sx={{ m: 2, width: "calc(100% - 32px)" }}
+            
+          >
+            <Grid item xs={12} sx={{ p: 1 }}>
+              <img 
+                src={kyc.address_proof_url} 
+                height="200px" 
+                width="100%" 
+                alt="upload"
+              />
+            </Grid>
+            <Grid item xs={6} sm={4} md={3} sx={{ p: 1 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              className="theme__palette--primary"
+              style={{ backgroundColor: 'var(--theme-background-tertiary)' }}
+              onClick={() => handleClick(kyc)}
+            >
+              Re Upload
+            </Button>
             </Grid>
           </Grid>
         }
