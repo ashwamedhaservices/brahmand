@@ -11,6 +11,10 @@ const topbarLinks = [
     title: 'User profiles',
     path: '/user-profile',
   },
+  {
+    title: 'Kyc',
+    path: '/kyc',
+  },
 ];
 
 export default topbarLinks;

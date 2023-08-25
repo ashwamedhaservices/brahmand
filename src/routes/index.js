@@ -7,6 +7,13 @@ import { storageGetItem } from '../service/ash_mlm';
 import HomePage from '../pages/HomePage';
 import Layout from '../layouts';
 import UserProfilePage from '../pages/UserProfilePage';
+import Onboarding from '../components/onboarding';
+import Pan from '../components/onboarding/kyc/pan';
+import PanUpload from '../components/onboarding/kyc/pan_upload';
+import Address from '../components/onboarding/address/address';
+import AddressProofUpload from '../components/onboarding/address/address_proof_upload';
+import Bank from '../components/onboarding/bank/bank';
+import Nominee from '../components/onboarding/nominee/nominee';
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -25,6 +32,18 @@ export default function Router() {
         { element: <Navigate to="/home" />, index: true },
         { path: 'home', element: <HomePage />},
         { path: 'user-profile', element: <UserProfilePage />},
+        { path: 'kyc',
+          element: <Onboarding />,
+          children: [
+            { path: 'pan', element: <Pan /> },
+            { path: 'pan-upload', element: <PanUpload /> },
+            { path: 'address', element: <Address /> },
+            { path: 'address-proof-upload', element: <AddressProofUpload /> },
+            { path: 'bank', element: <Bank /> },
+            // { path: 'bank-status', element: '' },
+            { path: 'nominee', element: <Nominee /> },
+          ]
+        }
       ],
     },
     {

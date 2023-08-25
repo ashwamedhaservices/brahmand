@@ -2,6 +2,7 @@ import React from "react";
 // @mui/material
 import Paper from "@mui/material/Paper";
 import BottomNavigation from "@mui/material/BottomNavigation";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 // @mui/icons
 import { useLocation } from "react-router-dom";
 import { Avatar, Button } from "@mui/material";
@@ -34,6 +35,10 @@ const Bottombar = () => {
         </Button>
         <Button href="/user-profile" variant="contained" className={location && location.pathname === '/user-profile' ? 'bottombar__button--selected' : 'bottombar__button'}>
           <Avatar src="/assets/illustrations/Customer.svg" alt="Profile" />
+        </Button>
+        <Button href="/kyc" variant="contained" className={location && location.pathname && location.pathname.split('/').includes('kyc') ? 'bottombar__button--selected' : 'bottombar__button'}>
+          {/* <Avatar src="/assets/illustrations/Customer.svg" alt="kyc" /> */}
+          <ManageAccountsIcon sx={{ height: '44px', width: '44px', color: '#4979D1'}}/>
         </Button>
       </BottomNavigation>
     </Paper>
