@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from 'react'
 import { SIGN_IN_USER, SIGN_OUT_USER } from './authTypes'
 import { reducer } from './authReducer'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import mockData from '../../_mock/admin.json';
 import { postLogin, storageClear, storageGetItem } from '../../service/ash_mlm';
 const initialState = {
@@ -14,10 +14,10 @@ export const AuthContext = createContext()
 export const AuthContextProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   
   const loginUser = async ({ mobile_number, otp }) => {
-    
-
+    const redirect_to = searchParams.get('redirect_to');
     const response = await postLogin({
       users: {
         mobile_number,
@@ -33,20 +33,13 @@ export const AuthContextProvider = (props) => {
           otp
         }
       })
-      navigate('/home', { replace: true });
+
+      if(redirect_to) {
+        navigate(redirect_to, { replace: true })
+      } else {
+        navigate('/home', { replace: true });
+      }
     }
-    // if(user) {
-    //   dispatch(
-    //     {
-    //     type: SIGN_IN_USER, 
-    //     payload: {
-    //       email,
-    //       username,
-    //       password
-    //     }
-    //   })
-    //   navigate('/dashboard', { replace: true });
-    // } 
     else {
       // User is logged out
       await storageClear();
