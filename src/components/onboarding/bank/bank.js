@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   AppBar,
   TextField,
@@ -17,9 +17,12 @@ import {
   postAccountsKycedBank,
 } from "../../../service/ash_mlm";
 import { accountNoValidation, ifscValidation } from "../../../utils/validations";
+import { KycBankContext } from "../../../context/bank/kycBankContextProvider";
 
 const Bank = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { fetchKycBankData, createKycBank, updateKycBank } = useContext(KycBankContext)
   const [kycId, setKycId] = useState(null);
   const [bankData, setBankData] = useState({
     account_number: "",
@@ -30,6 +33,10 @@ const Bank = () => {
   const [ifscError, setIfscError] = useState("");
 
   useEffect(() => {
+    const bankId = searchParams.get('id');
+    if(bankId) {
+      _fetchKycBankData(bankId);
+    }
     fetchKycData();
   }, []);
 
@@ -43,20 +50,22 @@ const Bank = () => {
     }
   };
 
-  const createBank = async () => {
-    try {
-      console.log("[bank]::[createBank]:: Enter", bankData);
-      const bankPayload = { bank_account: bankData };
-      console.log("[bank]::[createBank]::", bankPayload);
+  const _fetchKycBankData = async (bankId) => {
+    const banks = await fetchKycBankData(kycId);
+    setBankData(() => ({
+      ...banks.filter((bank) => bank.id === Number(bankId))[0]
+    }))
+  }
 
-      const data = await postAccountsKycedBank(bankPayload, kycId);
-      console.log("[bank]::[createBank]::[response]::", data);
-
-      await _fetchOnboardingStatus();
-    } catch (error) {
-      console.error(error);
-    }
+  const _createBank = async () => {
+    await createKycBank(bankData, kycId);
+    await _fetchOnboardingStatus();
   };
+
+  const _updateKycBank = async () => {
+    await updateKycBank(bankData);
+    navigate('/kyc', {replace: true});
+  }
 
   const _fetchOnboardingStatus = async () => {
     try {
@@ -106,7 +115,11 @@ const Bank = () => {
       return;
     }
 
-    await createBank();
+    if(bankData && bankData.id) {
+      await _updateKycBank();
+      return
+    }
+    await _createBank();
   }
 
   const buttonDisabled = () => {
@@ -196,7 +209,7 @@ const Bank = () => {
           onClick={handleBankSubmit}
           disabled={buttonDisabled()}
         >
-          Continue
+          {bankData && bankData.id ? 'Update' : 'Continue'}
         </Button>
       </Container>
     </div>

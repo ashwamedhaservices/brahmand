@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,17 +10,16 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Grid } from "@mui/material";
 import {
-  getAccountsKyc,
   getAccountsOnboarding,
-  postAccountsKyc,
-  putAccountsKyc,
 } from "../../../service/ash_mlm";
 import { panNumberValidation } from "../../../utils/validations";
-import { replace } from "lodash";
+
+import { KycContext } from "../../../context/kyc/kycContextProvider";
 
 const Pan = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { fetchKycData, createKyc, updateKyc } = useContext(KycContext)
   const [panNumberError, setPanNumberError] = useState("");
 
   const [kycData, setKycData] = useState({
@@ -37,39 +36,18 @@ const Pan = () => {
   }, [])
 
   const _fetchKycData = async () => {
-    try {
-      const kyc = await getAccountsKyc();
-      console.log("[nominee]::[_fetchKycData]::", kyc);
-      setKycData({...kyc})
-    } catch (error) {
-      console.error("[nominee]::[_fetchKycData]::err", error);
-    }
+    const kyc = await fetchKycData();
+    setKycData({...kyc})
   };
 
   const _createKyc = async () => {
-    console.log(`[_createKyc]:: Enter ${kycData}`);
-    const kycPayload = { kyc: kycData };
-    console.log(`[_createKyc]:: ${kycPayload}`);
-
-    const data = await postAccountsKyc(kycPayload);
-    console.log(`[_createKyc]::[response]:: ${data}`);
-
+    await createKyc(kycData);
     await _fetchOnboardingStatus();
   };
 
-  const updateKyc = async () => {
-    try {
-      console.log("[_updateKyc]:: Enter", kycData);
-      const kycPayload = { kyc: kycData };
-      console.log("[_updateKyc]::", kycPayload);
-
-      const data = await putAccountsKyc(kycPayload, kycData.id);
-      console.log("[_updateKyc]::[response]::", data);
-
-      navigate('/kyc', {replace: true});
-    } catch (error) {
-      console.error("[_updateKyc]::err", error);
-    }
+  const _updateKyc = async () => {
+    await updateKyc(kycData);
+    navigate('/kyc', {replace: true});
   };
 
   const _fetchOnboardingStatus = async () => {
@@ -103,7 +81,7 @@ const Pan = () => {
     console.log(kycData);
     if(kycData && kycData.id) {
       console.log('Update');
-      updateKyc();
+      _updateKyc();
       return
     }
     await _createKyc();
