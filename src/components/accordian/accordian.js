@@ -16,7 +16,7 @@ function CustomAccordian({ data, handleUserClick }) {
       {data && data.map((item) => (
         <div className="k-ml8 k-mr8" key={item.fname + item.mobile_number
         }>
-          <Accordion style={mystyle}>
+          <Accordion style={{...mystyle, opacity: !data.isSubscribed ? .3 : 1}}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon style={{ color: "white" }} />}
               aria-controls="panel1a-content"
