@@ -1,14 +1,14 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Typography, Accordion,  AccordionDetails, AccordionSummary } from "@mui/material";
 
-const mystyle = {
+const mystyle = (subscribed) => ({
   color: "var(--theme-font-color-secondary)",
   // height: '84px',
-  backgroundColor: "var(--theme-background-quaternary)",
+  backgroundColor: subscribed === true ? 'var(--theme-background-quaternary)' : 'var(--theme-background-tertiary)',
   borderRadius: "12px",
   boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
   marginTop: "16px",
-};
+});
 
 function CustomAccordian({ data, handleUserClick }) {
   return (
@@ -16,7 +16,7 @@ function CustomAccordian({ data, handleUserClick }) {
       {data && data.map((item) => (
         <div className="k-ml8 k-mr8" key={item.fname + item.mobile_number
         }>
-          <Accordion style={{...mystyle, opacity: !data.isSubscribed ? .3 : 1}}>
+          <Accordion style={{...mystyle(item.subscribed)}}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon style={{ color: "white" }} />}
               aria-controls="panel1a-content"
