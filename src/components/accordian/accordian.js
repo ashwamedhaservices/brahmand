@@ -19,7 +19,7 @@ function CustomAccordian({ data, handleUserClick }) {
         }>
           <Accordion style={{...mystyle(item.subscribed)}}>
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon style={{ color: "white" }} />}
+              expandIcon={<ExpandMoreIcon style={{ color: item.subscribed === true ? "var(--theme-font-color-secondary)" : 'var(--theme-font-color-primary)' }} />}
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
