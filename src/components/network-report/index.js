@@ -8,6 +8,10 @@ const NetworkReport = ({ }) => {
   const handleNetworkReportPdfDownloadClick = async () => {
     const response = await downloadNetworkReportPdf();
     // create file link in browser's memory
+    if (response == null){
+      console.log('response is null api response was unsuccessful');
+      return 
+    }
     const href = URL.createObjectURL(response.data);
 
     // create "a" HTML element with href to file & click
