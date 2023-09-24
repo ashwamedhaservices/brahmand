@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getUserLoginApi, getPartnerAcountsApi, getPartnerAccountsNetworkApi, getAccountsOnboardingUrl, putAccountsKycedNomineesUrl, postAccountsKycedNomineesUrl, getAccountsKycedNomineesUrl, putAccountsKycedAddressUrl, postAccountsKycedAddressUrl, getAccountsKycedAddressUrl, putAccountsKycedBankUrl, postAccountsKycedBankUrl, getAccountsKycedBankUrl, putAccountsKycUrl, postAccountsKycUrl, getAccountsKycUrl, FILE_UPLOAD } from '../config/servers/api';
+import { getUserLoginApi, getPartnerAcountsApi, getPartnerAccountsNetworkApi, getAccountsOnboardingUrl, putAccountsKycedNomineesUrl, postAccountsKycedNomineesUrl, getAccountsKycedNomineesUrl, putAccountsKycedAddressUrl, postAccountsKycedAddressUrl, getAccountsKycedAddressUrl, putAccountsKycedBankUrl, postAccountsKycedBankUrl, getAccountsKycedBankUrl, putAccountsKycUrl, postAccountsKycUrl, getAccountsKycUrl, FILE_UPLOAD, getNetworkReportPDF } from '../config/servers/api';
 
 // let instance;
 // class ApiAdminService {
@@ -11,7 +11,7 @@ import { getUserLoginApi, getPartnerAcountsApi, getPartnerAccountsNetworkApi, ge
 //     instance = this;
 //   }
 
-  
+
 // }
 
 // let ApiAdminServiceInstance = Object.freeze(new ApiAdminService());
@@ -66,7 +66,7 @@ export const postLogin = async (payload) => {
     })
     console.log('[postLogin]::', response, response.data);
     response = response.data
-    if(response.success) {
+    if (response.success) {
       const { attributes } = response.data
       await storageSetItem('users', JSON.stringify(attributes))
       await storageSetItem('partner_token', attributes.token);
@@ -92,7 +92,7 @@ export const getPartnerAccounts = async () => {
     });
     response = response.data;
     console.log('[services]::[getPartnerAccounts]::[response]:: ', response);
-    if(response && response.success) {
+    if (response && response.success) {
       return response.data
     } else {
       return null;
@@ -101,14 +101,14 @@ export const getPartnerAccounts = async () => {
     console.log('[services]::[getPartnerAccounts]::[error]:: ', error);
     return null;
   }
-} 
+}
 
 export const getPartnerAccountsNetwork = async (id) => {
   try {
     console.log('[services]::[getPartnerAccountsNetwork]:: Enter')
     const getHeader = await getHeaderOptions();
     let url = getPartnerAccountsNetworkApi();
-    if(id) {
+    if (id) {
       url += `?id=${id}`
     }
     console.log('[services]::[getPartnerAccountsNetwork] url', url);
@@ -120,7 +120,7 @@ export const getPartnerAccountsNetwork = async (id) => {
     });
     response = response.data;
     console.log('[services]::[getPartnerAccountsNetwork]::[response]:: ', response);
-    if(response && response.success) {
+    if (response && response.success) {
       return response.data
     } else {
       return null;
@@ -129,14 +129,14 @@ export const getPartnerAccountsNetwork = async (id) => {
     console.log('[services]::[getPartnerAccountsNetwork]::[error]:: ', error);
     return null;
   }
-} 
+}
 
 export const getAccountsKyc = async () => {
   console.log('[service]::[getAccountsKyc]:: ');
   const responseJson =
-      await makeRequest('get', getAccountsKycUrl(), {});
+    await makeRequest('get', getAccountsKycUrl(), {});
   console.log(
-      `[service]::[getAccountsKyc]::[makeRequests]::[result] ${responseJson}`);
+    `[service]::[getAccountsKyc]::[makeRequests]::[result] ${responseJson}`);
 
   if (responseJson['success']) {
     return responseJson['data'];
@@ -147,9 +147,9 @@ export const getAccountsKyc = async () => {
 export const postAccountsKyc = async (payload) => {
   console.log(`[service]::[postAccountsKyc]:: ${payload}`);
   const responseJson = await makeRequest(
-      'post', postAccountsKycUrl(), payload);
+    'post', postAccountsKycUrl(), payload);
   console.log(
-      `[service]::[postAccountsKyc]::[makeRequests]::[result] ${responseJson}`);
+    `[service]::[postAccountsKyc]::[makeRequests]::[result] ${responseJson}`);
   if (responseJson['success']) {
     return responseJson['data'];
   }
@@ -159,9 +159,9 @@ export const postAccountsKyc = async (payload) => {
 export const putAccountsKyc = async (payload, kycId) => {
   console.log(`[service]::[putAccountsKyc]:: ${payload} ${kycId}`);
   const responseJson = await makeRequest(
-      'put', putAccountsKycUrl(kycId), payload);
+    'put', putAccountsKycUrl(kycId), payload);
   console.log(
-      `[service]::[putAccountsKyc]::[makeRequests]::[result] ${responseJson}`);
+    `[service]::[putAccountsKyc]::[makeRequests]::[result] ${responseJson}`);
   if (responseJson['success']) {
     return responseJson['data'];
   }
@@ -171,9 +171,9 @@ export const putAccountsKyc = async (payload, kycId) => {
 export const getAccountsKycedBank = async (kycId) => {
   console.log('[service]::[getAccountsKycedBank]:: ');
   const responseJson = await makeRequest(
-      'get', getAccountsKycedBankUrl(kycId), {});
+    'get', getAccountsKycedBankUrl(kycId), {});
   console.log(
-      `[service]::[getAccountsKycedBank]::[makeRequests]::[result] ${responseJson}`);
+    `[service]::[getAccountsKycedBank]::[makeRequests]::[result] ${responseJson}`);
 
   if (responseJson['success']) {
     return responseJson['data'];
@@ -184,9 +184,9 @@ export const getAccountsKycedBank = async (kycId) => {
 export const postAccountsKycedBank = async (payload, kycId) => {
   console.log('[service]::[postAccountsKycedBank]:: ');
   const responseJson = await makeRequest(
-      'post', postAccountsKycedBankUrl(kycId), payload);
+    'post', postAccountsKycedBankUrl(kycId), payload);
   console.log(
-      `[service]::[postAccountsKycedBank]::[makeRequests]::[result] ${responseJson}`);
+    `[service]::[postAccountsKycedBank]::[makeRequests]::[result] ${responseJson}`);
 
   if (responseJson['success']) {
     return responseJson['data'];
@@ -197,9 +197,9 @@ export const postAccountsKycedBank = async (payload, kycId) => {
 export const putAccountsKycedBank = async (payload, kycId) => {
   console.log('[service]::[putAccountsKycedBank]:: ');
   const responseJson = await makeRequest(
-      'put', putAccountsKycedBankUrl(kycId), payload);
+    'put', putAccountsKycedBankUrl(kycId), payload);
   console.log(
-      `[service]::[putAccountsKycedBank]::[makeRequests]::[result] ${responseJson}`);
+    `[service]::[putAccountsKycedBank]::[makeRequests]::[result] ${responseJson}`);
 
   if (responseJson['success']) {
     return responseJson['data'];
@@ -210,9 +210,9 @@ export const putAccountsKycedBank = async (payload, kycId) => {
 export const getAccountsKycedAddress = async (kycId) => {
   console.log('[service]::[getAccountsKycedAddress]:: ');
   const responseJson = await makeRequest(
-      'get', getAccountsKycedAddressUrl(kycId), {});
+    'get', getAccountsKycedAddressUrl(kycId), {});
   console.log(
-      `[service]::[getAccountsKycedAddress]::[makeRequests]::[result] ${responseJson}`);
+    `[service]::[getAccountsKycedAddress]::[makeRequests]::[result] ${responseJson}`);
 
   if (responseJson['success']) {
     return responseJson['data'];
@@ -223,9 +223,9 @@ export const getAccountsKycedAddress = async (kycId) => {
 export const postAccountsKycedAddress = async (payload, kycId) => {
   console.log('[service]::[postAccountsKycedAddress]:: ');
   const responseJson = await makeRequest(
-      'post', postAccountsKycedAddressUrl(kycId), payload);
+    'post', postAccountsKycedAddressUrl(kycId), payload);
   console.log(
-      `[service]::[postAccountsKycedAddress]::[makeRequests]::[result] ${responseJson}`);
+    `[service]::[postAccountsKycedAddress]::[makeRequests]::[result] ${responseJson}`);
 
   if (responseJson['success']) {
     return responseJson['data'];
@@ -233,12 +233,12 @@ export const postAccountsKycedAddress = async (payload, kycId) => {
   return {};
 }
 
-export const putAccountsKycedAddress =  async (payload, kycId) => {
+export const putAccountsKycedAddress = async (payload, kycId) => {
   console.log('[service]::[putAccountsKycedAddress]:: ');
   const responseJson = await makeRequest(
-      'put', putAccountsKycedAddressUrl(kycId), payload);
+    'put', putAccountsKycedAddressUrl(kycId), payload);
   console.log(
-      `[service]::[putAccountsKycedAddress]::[makeRequests]::[result] ${responseJson}`);
+    `[service]::[putAccountsKycedAddress]::[makeRequests]::[result] ${responseJson}`);
 
   if (responseJson['success']) {
     return responseJson['data'];
@@ -249,9 +249,9 @@ export const putAccountsKycedAddress =  async (payload, kycId) => {
 export const getAccountsKycedNominees = async (kycId) => {
   console.log('[service]::[getAccountsKycedNominees]:: ');
   const responseJson = await makeRequest(
-      'get', getAccountsKycedNomineesUrl(kycId), {});
+    'get', getAccountsKycedNomineesUrl(kycId), {});
   console.log(
-      `[service]::[getAccountsKycedNominees]::[makeRequests]::[result] ${responseJson}`);
+    `[service]::[getAccountsKycedNominees]::[makeRequests]::[result] ${responseJson}`);
 
   if (responseJson['success']) {
     return responseJson['data'];
@@ -262,9 +262,9 @@ export const getAccountsKycedNominees = async (kycId) => {
 export const postAccountsKycedNominees = async (payload, kycId) => {
   console.log('[service]::[postAccountsKycedNominees]:: ');
   const responseJson = await makeRequest(
-      'post', postAccountsKycedNomineesUrl(kycId), payload);
+    'post', postAccountsKycedNomineesUrl(kycId), payload);
   console.log(
-      `[service]::[postAccountsKycedNominees]::[makeRequests]::[result] ${responseJson}`);
+    `[service]::[postAccountsKycedNominees]::[makeRequests]::[result] ${responseJson}`);
 
   if (responseJson['success']) {
     return responseJson['data'];
@@ -275,9 +275,9 @@ export const postAccountsKycedNominees = async (payload, kycId) => {
 export const putAccountsKycedNominees = async (payload, kycId) => {
   console.log('[service]::[putAccountsKycedNominees]:: ');
   const responseJson = await makeRequest(
-      'put', putAccountsKycedNomineesUrl(kycId), payload);
+    'put', putAccountsKycedNomineesUrl(kycId), payload);
   console.log(
-      `[service]::[putAccountsKycedNominees]::[makeRequests]::[result] ${responseJson}`);
+    `[service]::[putAccountsKycedNominees]::[makeRequests]::[result] ${responseJson}`);
 
   if (responseJson['success']) {
     return responseJson['data'];
@@ -288,9 +288,9 @@ export const putAccountsKycedNominees = async (payload, kycId) => {
 export const getAccountsOnboarding = async () => {
   console.log('[service]::[getAccountsOnboarding]:: ');
   const responseJson = await makeRequest(
-      'get', getAccountsOnboardingUrl(), {});
+    'get', getAccountsOnboardingUrl(), {});
   console.log(
-      `[service]::[getAccountsOnboarding]::[makeRequests]::[result] ${responseJson}`);
+    `[service]::[getAccountsOnboarding]::[makeRequests]::[result] ${responseJson}`);
 
   if (responseJson['success']) {
     return responseJson['data'];
@@ -318,7 +318,7 @@ export const postFileUpload = async (payload) => {
     });
     console.log('[postFileUpload]::', response);
     response = response.data
-    if(response.success) {
+    if (response.success) {
       return response
     } else {
       return null
@@ -330,7 +330,7 @@ export const postFileUpload = async (payload) => {
 }
 
 // File Uploaded to the location
-export const putFileUpload = async (axios_url, payload, handleUploadProgress = ()=>{}, content_type = "image/*") => {
+export const putFileUpload = async (axios_url, payload, handleUploadProgress = () => { }, content_type = "image/*") => {
   try {
     // let data = new FormData();
     // data.append('file', payload);
@@ -349,6 +349,31 @@ export const putFileUpload = async (axios_url, payload, handleUploadProgress = (
     });
   } catch (error) {
     console.log('[error]::[putFileUpload]', error.response)
+    return null
+  }
+}
+
+export const downloadNetworkReportPdf = async () => {
+  try {
+    console.log('calling network report pdf download api')
+    const responseJson = await makeRequest('get', getNetworkReportPDF());
+
+    const headers = await getHeaderOptions();
+
+    let response = await axios({
+      method: 'get',
+      url: getNetworkReportPDF(),
+      headers: headers,
+      responseType: 'blob',
+    })
+    if (response.status !== 200) {
+      console.log('downloading network report pdf')
+      return null
+    }
+    console.log('downloading network report pdf completed')
+    return response
+  } catch (err) {
+    console.log('error in downloadNetworkReportPdf', err)
     return null
   }
 }

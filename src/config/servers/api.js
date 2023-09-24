@@ -54,3 +54,6 @@ export const getAccountsOnboardingUrl = () => `${API_BASE_URL}/${API_ACCOUNTS}${
 // For FileUpload
 export const FILE_UPLOAD = () => `${API_BASE_URL}${API_BASE_VERSION}/file_upload`;
 export const FILE_UPLOAD_WITH_FORM_DATA = () => `${API_BASE_URL}${API_BASE_VERSION}/file_upload`;
+
+// For Network Report PDF download
+export const getNetworkReportPDF = () => `${API_BASE_VERSION_URL}/accounts/network_report.pdf`
