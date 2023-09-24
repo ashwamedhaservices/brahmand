@@ -365,26 +365,15 @@ export const downloadNetworkReportPdf = async () => {
       url: getNetworkReportPDF(),
       headers: headers,
       responseType: 'blob',
-    }).then((response) => {
-      // create file link in browser's memory
-      const href = URL.createObjectURL(response.data);
-
-      // create "a" HTML element with href to file & click
-      const link = document.createElement('a');
-      link.href = href;
-      link.setAttribute('download', `network_report_${new Date().toLocaleDateString()}.pdf`); //or any other extension
-      document.body.appendChild(link);
-      link.click();
-
-      // clean up "a" element & remove ObjectURL
-      document.body.removeChild(link);
-      URL.revokeObjectURL(href);
-    });
-    if (response.status === 200) {
+    })
+    if (response.status !== 200) {
       console.log('downloading network report pdf')
+      return null
     }
     console.log('downloading network report pdf completed')
+    return response
   } catch (err) {
     console.log('error in downloadNetworkReportPdf', err)
+    return null
   }
 }
