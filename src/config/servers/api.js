@@ -1,5 +1,5 @@
 // export const API_BASE_URL = 'http://64.227.164.116';
-export const API_BASE_URL = 'https://apistage.ashwamedha.net';
+export const API_BASE_URL = 'https://apistage.ashwamedha.net/staging';
 export const API_PARTNER = '/partner'
 export const API_ACCOUNTS = 'accounts';
 export const API_BASE_VERSION = '/api/v1';
@@ -9,7 +9,7 @@ export const API_BASE_VERSION_URL = `${API_BASE_URL}${API_PARTNER}${API_BASE_VER
 // For Login
 export const getUserLoginApi = () =>  `${API_BASE_URL}${API_BASE_VERSION}/users/otp_verification`;
 
-export const getPartnerAcountsApi = () => `${API_BASE_VERSION_URL}/accounts.json`;
+export const getPartnerAccountsApi = () => `${API_BASE_VERSION_URL}/accounts.json`;
 export const getPartnerAccountsNetworkApi = () => `${API_BASE_VERSION_URL}/accounts/network.json`;
 
 // For Accounts KYC GET
@@ -57,3 +57,5 @@ export const FILE_UPLOAD_WITH_FORM_DATA = () => `${API_BASE_URL}${API_BASE_VERSI
 
 // For Network Report PDF download
 export const getNetworkReportPDF = () => `${API_BASE_VERSION_URL}/accounts/network_report.pdf`
+
+export const productReferralsApi = (userId) => `${API_BASE_URL}/partner/api/v1/users/${userId}/product_referrals.json`

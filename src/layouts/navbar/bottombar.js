@@ -1,12 +1,16 @@
 import React from "react";
 // @mui/material
 import Paper from "@mui/material/Paper";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+
 // @mui/icons
 import { useLocation } from "react-router-dom";
 import { Avatar, Button } from "@mui/material";
 import './bottombar.css';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import CategoryRoundedIcon from '@mui/icons-material/CategoryRounded';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import BottomNavigation from "@mui/material/BottomNavigation";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 const Bottombar = () => {
   const [value, setValue] = React.useState(0);
@@ -31,14 +35,16 @@ const Bottombar = () => {
         className="bottombar k-aic k-jcse"
       >
         <Button href="/home" variant="contained" className={location && location.pathname === '/home' ? 'bottombar__button--selected' : 'bottombar__button'}>
-          <Avatar src="/assets/illustrations/HomePage.svg" alt="Home" />
+          <HomeRoundedIcon sx={{color: '#4979D1'}}/>
+        </Button>
+        <Button href="/products" variant="contained" className={location && location.pathname === '/products' ? 'bottombar__button--selected' : 'bottombar__button'}>
+          <CategoryRoundedIcon sx={{color: '#4979D1'}}/>
         </Button>
         <Button href="/user-profile" variant="contained" className={location && location.pathname === '/user-profile' ? 'bottombar__button--selected' : 'bottombar__button'}>
-          <Avatar src="/assets/illustrations/Customer.svg" alt="Profile" />
+          <AccountCircleIcon sx={{color: '#4979D1'}}/>
         </Button>
         <Button href="/kyc" variant="contained" className={location && location.pathname && location.pathname.split('/').includes('kyc') ? 'bottombar__button--selected' : 'bottombar__button'}>
-          {/* <Avatar src="/assets/illustrations/Customer.svg" alt="kyc" /> */}
-          <ManageAccountsIcon sx={{ height: '44px', width: '44px', color: '#4979D1'}}/>
+          <ManageAccountsIcon sx={{color: '#4979D1'}}/>
         </Button>
       </BottomNavigation>
     </Paper>
