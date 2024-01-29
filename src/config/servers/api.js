@@ -1,5 +1,5 @@
 // export const API_BASE_URL = 'http://64.227.164.116';
-export const API_BASE_URL = 'https://apistage.ashwamedha.net/staging';
+export const API_BASE_URL = 'https://apistage.ashwamedha.net';
 export const API_PARTNER = '/partner'
 export const API_ACCOUNTS = 'accounts';
 export const API_BASE_VERSION = '/api/v1';
