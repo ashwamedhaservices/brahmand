@@ -14,6 +14,8 @@ import Address from '../components/onboarding/address/address';
 import AddressProofUpload from '../components/onboarding/address/address_proof_upload';
 import Bank from '../components/onboarding/bank/bank';
 import Nominee from '../components/onboarding/nominee/nominee';
+import ProductPage from '../pages/ProductPage';
+import ProductReferral from '../pages/ProductReferral';
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -32,6 +34,8 @@ export default function Router() {
         { element: <Navigate to="/home" />, index: true },
         { path: 'home', element: <HomePage />},
         { path: 'user-profile', element: <UserProfilePage />},
+        { path: 'products', element: <ProductPage />},
+        { path: 'products/referrals/:category', element: <ProductReferral />},
         { path: 'kyc',
           element: <Onboarding />,
           children: [
