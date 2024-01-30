@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getUserLoginApi, getPartnerAcountsApi, getPartnerAccountsNetworkApi, getAccountsOnboardingUrl, putAccountsKycedNomineesUrl, postAccountsKycedNomineesUrl, getAccountsKycedNomineesUrl, putAccountsKycedAddressUrl, postAccountsKycedAddressUrl, getAccountsKycedAddressUrl, putAccountsKycedBankUrl, postAccountsKycedBankUrl, getAccountsKycedBankUrl, putAccountsKycUrl, postAccountsKycUrl, getAccountsKycUrl, FILE_UPLOAD, getNetworkReportPDF } from '../config/servers/api';
+import { FILE_UPLOAD, getAccountsKycUrl, getAccountsKycedAddressUrl, getAccountsKycedBankUrl, getAccountsKycedNomineesUrl, getAccountsOnboardingUrl, getNetworkReportPDF, getPartnerAccountsApi, getPartnerAccountsNetworkApi, getUserLoginApi, postAccountsKycUrl, postAccountsKycedAddressUrl, postAccountsKycedBankUrl, postAccountsKycedNomineesUrl, productReferralsApi, putAccountsKycUrl, putAccountsKycedAddressUrl, putAccountsKycedBankUrl, putAccountsKycedNomineesUrl } from '../config/servers/api';
 
 // let instance;
 // class ApiAdminService {
@@ -53,6 +53,29 @@ export const makeRequest = async (methodType, uri, payload = {}) => {
   }
 }
 
+export const callApi = async (method = 'get', url = '', payload = {}, header = {}) =>{
+  try {
+    console.log('calling api url', url, ' method ', method, ' payload ', payload)
+    const defaultHeaders = await getHeaderOptions();
+    const headers = {...defaultHeaders, ...header}
+    let response = await axios({
+      method: method,
+      url: url,
+      headers: headers,
+      data: payload
+    });
+    if(response.status >= 200 && response.status < 300){
+      console.log('api call success');
+      return response.data
+    }
+    console.log('api call failed response', response)
+    return response.data
+  } catch (error) {
+    console.log('something went wrong with the requests ', error);
+    return {};
+  }
+}
+
 // Login
 export const postLogin = async (payload) => {
   try {
@@ -87,7 +110,7 @@ export const getPartnerAccounts = async () => {
     console.log('[services]::[getPartnerAccounts]::[header]::', getHeader);
     let response = await axios({
       method: 'get',
-      url: getPartnerAcountsApi(),
+      url: getPartnerAccountsApi(),
       headers: getHeader,
     });
     response = response.data;
@@ -356,10 +379,7 @@ export const putFileUpload = async (axios_url, payload, handleUploadProgress = (
 export const downloadNetworkReportPdf = async () => {
   try {
     console.log('calling network report pdf download api')
-    const responseJson = await makeRequest('get', getNetworkReportPDF());
-
     const headers = await getHeaderOptions();
-
     let response = await axios({
       method: 'get',
       url: getNetworkReportPDF(),
@@ -375,5 +395,21 @@ export const downloadNetworkReportPdf = async () => {
   } catch (err) {
     console.log('error in downloadNetworkReportPdf', err)
     return null
+  }
+}
+
+export const getProductReferrals = async (userId, productCategory) => {
+  try {
+    const uri = productReferralsApi(userId) + `?category=${productCategory}`;
+    console.log('calling product referrals api', uri)
+    const response = await callApi('get', uri);
+    console.log('product referrals api response', response)
+    if(response && response.data){
+      return response.data;
+    }
+    throw new Error('product referral api call failed');
+  } catch (err) {
+    console.log('error in getProductReferrals', err)
+    return [];
   }
 }

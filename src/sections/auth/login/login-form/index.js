@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 // @mui
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -18,9 +18,19 @@ export default function LoginForm() {
   const [otp, setOtp] = useState('');
   const [otpError, setOtpError] = useState('');
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const searchParams = new URLSearchParams(route.search);
-    setMobile(() => searchParams.get('mobile_number'));
+
+    const token = searchParams.get('token');
+
+    if (Boolean(token)) {
+      localStorage.setItem('partner_token', token);
+
+      navigate('/');
+    }
+    else setMobile(() => searchParams.get('mobile_number'));
   }, [])
   
   const handleOtpChange = (e) => {
